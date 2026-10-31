@@ -60,7 +60,7 @@ CREATE TABLE items (
     created_at  TIMESTAMPTZ  NOT NULL DEFAULT now()
 );
 
--- ROP and max level per item AND per location (set by the inventory manager)
+-- ROP and max level per item AND per location (set by the owner)
 CREATE TABLE item_location_settings (
     item_id        INTEGER NOT NULL REFERENCES items(id),
     location_id    INTEGER NOT NULL REFERENCES locations(id),
@@ -240,7 +240,7 @@ CREATE TABLE reservations (
     released_at  TIMESTAMPTZ
 );
 
--- Count difference, damaged or lost items, delivery variance. Needs inventory manager approval.
+-- Count difference, damaged or lost items, delivery variance. Approved by the manager of the same location (warehouse manager or shop manager); the owner is notified.
 CREATE TABLE stock_adjustments (
     id             INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     adj_no         VARCHAR(20) NOT NULL UNIQUE,
@@ -255,7 +255,8 @@ CREATE TABLE stock_adjustments (
     review_remarks TEXT,
     created_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
     reviewed_at    TIMESTAMPTZ,
-    CHECK (status = 'pending' OR reviewed_by IS NOT NULL)
+    CHECK (status = 'pending' OR reviewed_by IS NOT NULL),
+    CHECK (reviewed_by IS NULL OR reviewed_by <> requested_by)       -- nobody approves their own adjustment
 );
 
 CREATE TABLE stock_adjustment_items (
@@ -551,6 +552,5 @@ INSERT INTO roles (code, name) VALUES
     ('owner',             'Owner'),
     ('shop_manager',      'Shop Manager'),
     ('shop_staff',        'Shop Staff'),
-    ('inventory_manager', 'Inventory Manager'),
     ('warehouse_manager', 'Warehouse Manager'),
     ('warehouse_staff',   'Warehouse Staff');

@@ -5,14 +5,14 @@ from . import bp
 
 
 @bp.route("/items")
-@roles_required("inventory_manager", "owner", "warehouse_manager")
+@roles_required("owner", "warehouse_manager")
 def item_list():
     # TODO: query the database
     return render_template("admin/item_list.html")
 
 
 @bp.route("/items/new", methods=["GET", "POST"])
-@roles_required("inventory_manager", "owner")
+@roles_required("owner")
 def item_new():
     # TODO: load the record(s) from the database and pre-fill the form (see database/schema.sql)
     if request.method == "POST":
@@ -23,7 +23,7 @@ def item_new():
 
 
 @bp.route("/items/<int:item_id>/edit", methods=["GET", "POST"])
-@roles_required("inventory_manager", "owner")
+@roles_required("owner")
 def item_edit(item_id):
     # TODO: load the record(s) from the database and pre-fill the form (see database/schema.sql)
     if request.method == "POST":

@@ -3,7 +3,7 @@
 {% block title %}New Stock Adjustment{% endblock %}
 {% block content %}
 <div class="page-head"><h1>New Stock Adjustment</h1><span class="badge">Draft</span></div>
-<p class="note">The inventory manager must approve before the stock changes.</p>
+<p class="note">Your location's manager (warehouse manager or shop manager) must approve before the stock changes. The owner is notified.</p>
 <form method="post" class="card">
 <div class="grid">
   {{ m.field('Adjustment no.', 'adj_no', 'text', value='auto', readonly=True) }}

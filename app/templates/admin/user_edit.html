@@ -9,7 +9,7 @@
   {{ m.field('Username', 'username', 'text', required=True) }}
   {{ m.field('Full name', 'full_name', 'text', required=True) }}
   {{ m.field('Email', 'email', 'email') }}
-  {{ m.field('Role', 'role_id', 'select', required=True, options=['Owner', 'Shop Manager', 'Shop Staff', 'Inventory Manager', 'Warehouse Manager', 'Warehouse Staff']) }}
+  {{ m.field('Role', 'role_id', 'select', required=True, options=['Owner', 'Shop Manager', 'Shop Staff', 'Warehouse Manager', 'Warehouse Staff']) }}
   {{ m.field('Location', 'location_id', 'select', options=['(shop or warehouse)']) }}
   {{ m.field('New password', 'password', 'password', required=True) }}
   {{ m.field('Active', 'is_active', 'checkbox', help=' Active') }}

@@ -2,7 +2,7 @@
 {% import '_macros.html' as m %}
 {% block title %}Items{% endblock %}
 {% block content %}
-<div class="page-head"><h1>Items</h1>{% if current_role in ['inventory_manager', 'owner'] %}<a class="btn primary" href="{{ url_for('admin.item_new') }}">+ New</a>{% endif %}</div>
+<div class="page-head"><h1>Items</h1>{% if current_role in ['owner'] %}<a class="btn primary" href="{{ url_for('admin.item_new') }}">+ New</a>{% endif %}</div>
 <div class="card">
 <div class="filters"><input type="search" placeholder="Search..."><select><option value="">Category: all</option><option>Tire</option><option>Tube</option><option>Flap</option><option>Other</option></select></div>
 <table class="data">

@@ -39,7 +39,7 @@ On the login page, pick a role to preview its menu and screens (temporary previe
 ## Where to start coding
 
 1. Real login (users table, password hash) and replace `/dev/role/<role>`.
-2. Items, locations and ROP settings (inventory manager), so there is data to work with.
+2. Items, locations and ROP settings (owner), so there is data to work with.
 3. Record sale / issue, then stock ledger and stock balances.
 4. Requisition, then reserve and transfer slip, then receive (AR).
 5. Alerts, then purchasing (REF, RFQ, approval, PO), then receiving (RM).

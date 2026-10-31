@@ -5,14 +5,14 @@ bp = Blueprint("inventory", __name__, url_prefix="/inventory")
 
 
 @bp.route("/stock")
-@roles_required("owner", "shop_manager", "shop_staff", "inventory_manager", "warehouse_manager", "warehouse_staff")
+@roles_required("owner", "shop_manager", "shop_staff", "warehouse_manager", "warehouse_staff")
 def stock_list():
     # TODO: query the database
     return render_template("inventory/stock_list.html")
 
 
 @bp.route("/stock/<int:item_id>")
-@roles_required("owner", "shop_manager", "shop_staff", "inventory_manager", "warehouse_manager", "warehouse_staff")
+@roles_required("owner", "shop_manager", "shop_staff", "warehouse_manager", "warehouse_staff")
 def stock_detail(item_id):
     # TODO: query the database
     return render_template("inventory/stock_detail.html", item_id=item_id)
@@ -44,14 +44,14 @@ def issue_detail(issue_id):
 
 
 @bp.route("/rop")
-@roles_required("inventory_manager", "owner")
+@roles_required("owner")
 def rop_list():
     # TODO: query the database
     return render_template("inventory/rop_list.html")
 
 
 @bp.route("/rop/<int:item_id>/edit", methods=["GET", "POST"])
-@roles_required("inventory_manager")
+@roles_required("owner")
 def rop_edit(item_id):
     # TODO: load the record(s) from the database and pre-fill the form (see database/schema.sql)
     if request.method == "POST":
@@ -80,14 +80,14 @@ def rfqueue_review(rf_id):
 
 
 @bp.route("/adjustments")
-@roles_required("inventory_manager", "warehouse_manager", "warehouse_staff", "owner")
+@roles_required("warehouse_manager", "warehouse_staff", "shop_manager", "shop_staff", "owner")
 def adjustment_list():
     # TODO: query the database
     return render_template("inventory/adjustment_list.html")
 
 
 @bp.route("/adjustments/new", methods=["GET", "POST"])
-@roles_required("warehouse_staff", "warehouse_manager")
+@roles_required("warehouse_staff", "warehouse_manager", "shop_staff", "shop_manager")
 def adjustment_new():
     # TODO: load the record(s) from the database and pre-fill the form (see database/schema.sql)
     if request.method == "POST":
@@ -98,14 +98,18 @@ def adjustment_new():
 
 
 @bp.route("/adjustments/<int:adj_id>")
-@roles_required("inventory_manager", "warehouse_manager", "warehouse_staff", "owner")
+@roles_required("warehouse_manager", "warehouse_staff", "shop_manager", "shop_staff", "owner")
 def adjustment_detail(adj_id):
     # TODO: query the database
     return render_template("inventory/adjustment_detail.html", adj_id=adj_id)
 
 
+# Each manager approves the adjustments of their OWN location only:
+#   warehouse_manager -> warehouse, shop_manager -> own shop. The owner is notified and can view them.
+# TODO when coding: check adjustment.location_id == the user's location_id, and reviewed_by != requested_by.
+# Only if a manager raised the request (no one else at that location can approve), the owner reviews it.
 @bp.route("/adjustments/<int:adj_id>/review", methods=["GET", "POST"])
-@roles_required("inventory_manager")
+@roles_required("warehouse_manager", "shop_manager", "owner")
 def adjustment_review(adj_id):
     # TODO: load the record(s) from the database and pre-fill the form (see database/schema.sql)
     if request.method == "POST":

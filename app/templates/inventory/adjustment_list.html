@@ -2,7 +2,7 @@
 {% import '_macros.html' as m %}
 {% block title %}Stock Adjustments{% endblock %}
 {% block content %}
-<div class="page-head"><h1>Stock Adjustments</h1>{% if current_role in ['warehouse_staff', 'warehouse_manager'] %}<a class="btn primary" href="{{ url_for('inventory.adjustment_new') }}">+ New</a>{% endif %}</div>
+<div class="page-head"><h1>Stock Adjustments</h1>{% if current_role in ['warehouse_staff', 'warehouse_manager', 'shop_staff', 'shop_manager'] %}<a class="btn primary" href="{{ url_for('inventory.adjustment_new') }}">+ New</a>{% endif %}</div>
 <div class="card">
 <div class="filters"><input type="search" placeholder="Search..."><select><option value="">Status: all</option><option>Pending</option><option>Approved</option><option>Rejected</option></select></div>
 <table class="data">

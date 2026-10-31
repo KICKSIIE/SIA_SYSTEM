@@ -8,6 +8,7 @@
   <a class="tile" href="{{ url_for('requisition.rf_list') }}"><h3>Requisition forms</h3><p>Open RFs: 0</p></a>
   <a class="tile" href="{{ url_for('delivery.delivery_list') }}"><h3>Incoming deliveries</h3><p>Waiting for your AR: 0</p></a>
   <a class="tile" href="{{ url_for('inventory.stock_list') }}"><h3>Shop stock</h3><p>Items below ROP: 0</p></a>
+  <a class="tile" href="{{ url_for('inventory.adjustment_list') }}"><h3>Stock adjustments</h3><p>Shop adjustments to approve: 0</p></a>
 </div>
 <p class="note">Numbers are placeholders until the screens are connected to the database.</p>
 {% endblock %}

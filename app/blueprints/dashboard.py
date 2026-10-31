@@ -14,6 +14,6 @@ def index():
 
 
 @bp.route("/reports")
-@roles_required("owner", "inventory_manager")
+@roles_required("owner")
 def reports():
     return render_template("dashboard/reports.html")
