@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{% endblock %} | Inventory System</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">Inventory System</div>
+  <div class="who">
+    {% if current_role %}
+      <span class="role-pill">{{ role_label }}</span>
+      <details class="switch"><summary>Preview as another role</summary>
+        <div>{% for code, label in role_labels.items() %}<a href="{{ url_for('auth.dev_role', role=code) }}">{{ label }}</a>{% endfor %}</div>
+      </details>
+      <a href="{{ url_for('auth.logout') }}">Log out</a>
+    {% endif %}
+  </div>
+</header>
+<div class="layout">
+  {% if current_role %}
+  <nav class="sidebar">
+    {% for item in menu %}
+      {% if item[0] == '--' %}<div class="group">{{ item[1] }}</div>
+      {% else %}<a href="{{ url_for(item[1]) }}" class="{{ 'active' if current_endpoint == item[1] else '' }}">{{ item[0] }}</a>{% endif %}
+    {% endfor %}
+  </nav>
+  {% endif %}
+  <main class="content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</div>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

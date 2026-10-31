@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Edit ROP Settings{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Edit ROP Settings</h1></div>
+<p class="note">Set a separate ROP for the shop and for the warehouse. Max level must be equal to or higher than ROP.</p>
+<form method="post" class="card">
+<div class="grid">
+  {{ m.field('Item', 'item', 'text', readonly=True) }}
+  {{ m.field('Brand / size / ply', 'spec', 'text', readonly=True) }}
+</div>
+<h2>Items</h2>
+<table class="data lines" id="lines">
+<thead><tr><th>Location</th><th>Current stock</th><th>ROP</th><th>Max level</th><th>Lead time (days)</th><th></th></tr></thead>
+<tbody>
+<tr class="line-row"><td><input type="text" name="location[]" readonly></td><td><input type="number" min="0" name="on_hand[]" readonly></td><td><input type="number" min="0" name="rop[]"></td><td><input type="number" min="0" name="max_level[]"></td><td><input type="number" min="0" name="lead_time_days[]"></td><td><button type="button" class="btn small ghost" data-remove-row>Remove</button></td></tr>
+</tbody>
+</table>
+<div class="actions">
+  <button type="submit" name="action" value="save_settings" class="btn primary">Save settings</button>
+  <a class="btn ghost" href="{{ url_for('inventory.rop_list') }}">Back</a>
+</div>
+</form>
+{% endblock %}

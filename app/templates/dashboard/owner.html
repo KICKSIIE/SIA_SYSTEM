@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Dashboard</h1><span class="badge">Owner</span></div>
+<div class="cards">
+  <a class="tile" href="{{ url_for('purchasing.approval_list') }}"><h3>Approvals</h3><p>Waiting for your decision: 0</p></a>
+  <a class="tile" href="{{ url_for('requisition.rf_list') }}"><h3>Requisition forms</h3><p>Open RFs: 0</p></a>
+  <a class="tile" href="{{ url_for('purchasing.ref_list') }}"><h3>Replenishment forms</h3><p>Open REFs: 0</p></a>
+  <a class="tile" href="{{ url_for('purchasing.po_list') }}"><h3>Purchase orders</h3><p>Open POs: 0</p></a>
+  <a class="tile" href="{{ url_for('delivery.discrepancy_list') }}"><h3>Discrepancy reports</h3><p>Open: 0</p></a>
+  <a class="tile" href="{{ url_for('admin.user_list') }}"><h3>Users</h3><p>Manage accounts</p></a>
+</div>
+<p class="note">Numbers are placeholders until the screens are connected to the database.</p>
+{% endblock %}

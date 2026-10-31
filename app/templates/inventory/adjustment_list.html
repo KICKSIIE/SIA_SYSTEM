@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Stock Adjustments{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Stock Adjustments</h1>{% if current_role in ['warehouse_staff', 'warehouse_manager'] %}<a class="btn primary" href="{{ url_for('inventory.adjustment_new') }}">+ New</a>{% endif %}</div>
+<div class="card">
+<div class="filters"><input type="search" placeholder="Search..."><select><option value="">Status: all</option><option>Pending</option><option>Approved</option><option>Rejected</option></select></div>
+<table class="data">
+<thead><tr><th>Adj. no.</th><th>Date</th><th>Location</th><th>Reason</th><th>Items</th><th>Status</th><th></th></tr></thead>
+<tbody>
+<tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td><a href="{{ url_for('inventory.adjustment_detail', adj_id=1) }}">Open</a></td></tr>
+</tbody>
+</table>
+<p class="muted">No records yet. The row above is a placeholder so you can click through the screens.</p>
+</div>
+{% endblock %}

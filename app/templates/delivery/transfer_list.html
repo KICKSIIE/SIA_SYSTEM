@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Transfer Slips (TS){% endblock %}
+{% block content %}
+<div class="page-head"><h1>Transfer Slips (TS)</h1></div>
+<div class="card">
+<div class="filters"><input type="search" placeholder="Search..."><select><option value="">Status: all</option><option>Draft</option><option>Assigned</option><option>Loaded</option><option>In transit</option><option>Delivered</option><option>Delivered with variance</option></select></div>
+<table class="data">
+<thead><tr><th>TS no.</th><th>Date</th><th>RF no.</th><th>To shop</th><th>Driver</th><th>Vehicle</th><th>Status</th><th></th></tr></thead>
+<tbody>
+<tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td><a href="{{ url_for('delivery.transfer_detail', ts_id=1) }}">Open</a></td></tr>
+</tbody>
+</table>
+<p class="muted">No records yet. The row above is a placeholder so you can click through the screens.</p>
+</div>
+{% endblock %}

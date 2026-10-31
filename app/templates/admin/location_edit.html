@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Edit Location{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Edit Location</h1></div>
+<form method="post" class="card">
+<div class="grid">
+  {{ m.field('Code', 'code', 'text', required=True) }}
+  {{ m.field('Name', 'name', 'text', required=True) }}
+  {{ m.field('Type', 'loc_type', 'select', required=True, options=['Shop', 'Warehouse']) }}
+  {{ m.field('Address', 'address', 'text', col=2) }}
+  {{ m.field('Active', 'is_active', 'checkbox', help=' Active') }}
+</div>
+<div class="actions">
+  <button type="submit" name="action" value="save_location" class="btn primary">Save location</button>
+  <a class="btn ghost" href="{{ url_for('admin.location_list') }}">Back</a>
+</div>
+</form>
+{% endblock %}

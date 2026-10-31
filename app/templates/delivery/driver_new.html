@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}New Driver{% endblock %}
+{% block content %}
+<div class="page-head"><h1>New Driver</h1></div>
+<p class="note">Drivers do not log in. They are only named on the TS.</p>
+<form method="post" class="card">
+<div class="grid">
+  {{ m.field('Full name', 'full_name', 'text', required=True) }}
+  {{ m.field('Contact no.', 'contact_no', 'text') }}
+  {{ m.field('License no.', 'license_no', 'text') }}
+  {{ m.field('Active', 'is_active', 'checkbox', help=' Active') }}
+</div>
+<div class="actions">
+  <button type="submit" name="action" value="save_driver" class="btn primary">Save driver</button>
+  <a class="btn ghost" href="{{ url_for('delivery.driver_list') }}">Back</a>
+</div>
+</form>
+{% endblock %}

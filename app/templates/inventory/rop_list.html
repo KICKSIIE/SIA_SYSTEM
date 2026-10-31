@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}ROP Settings{% endblock %}
+{% block content %}
+<div class="page-head"><h1>ROP Settings</h1></div>
+<div class="card">
+<div class="filters"><input type="search" placeholder="Search..."><select><option value="">Location: all</option><option>(all locations)</option></select><select><option value="">Show: all</option><option>All items</option><option>Items without ROP</option></select></div>
+<table class="data">
+<thead><tr><th>Item</th><th>Location</th><th>Stock</th><th>ROP</th><th>Max level</th><th>Lead time (days)</th><th>Updated</th><th></th></tr></thead>
+<tbody>
+<tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td><a href="{{ url_for('inventory.rop_edit', item_id=1) }}">Open</a></td></tr>
+</tbody>
+</table>
+<p class="muted">No records yet. The row above is a placeholder so you can click through the screens.</p>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Edit Vehicle{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Edit Vehicle</h1></div>
+<form method="post" class="card">
+<div class="grid">
+  {{ m.field('Plate no.', 'plate_no', 'text', required=True) }}
+  {{ m.field('Vehicle type', 'vehicle_type', 'text') }}
+  {{ m.field('Active', 'is_active', 'checkbox', help=' Active') }}
+</div>
+<div class="actions">
+  <button type="submit" name="action" value="save_vehicle" class="btn primary">Save vehicle</button>
+  <a class="btn ghost" href="{{ url_for('delivery.vehicle_list') }}">Back</a>
+</div>
+</form>
+{% endblock %}

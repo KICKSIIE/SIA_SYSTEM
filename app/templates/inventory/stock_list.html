@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Stock{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Stock</h1></div>
+<div class="card">
+<div class="filters"><input type="search" placeholder="Search..."><select><option value="">Location: all</option><option>(all locations)</option></select><select><option value="">Category: all</option><option>Tire</option><option>Tube</option><option>Flap</option></select><select><option value="">Status: all</option><option>Below ROP</option><option>OK</option><option>Out of stock</option></select></div>
+<table class="data">
+<thead><tr><th>Item</th><th>Location</th><th>On hand</th><th>Reserved</th><th>Available</th><th>ROP</th><th>Status</th><th></th></tr></thead>
+<tbody>
+<tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td><a href="{{ url_for('inventory.stock_detail', item_id=1) }}">Open</a></td></tr>
+</tbody>
+</table>
+<p class="muted">No records yet. The row above is a placeholder so you can click through the screens.</p>
+</div>
+{% endblock %}

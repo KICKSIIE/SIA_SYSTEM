@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Record Quotation{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Record Quotation</h1></div>
+<p class="note">The supplier replies by email. Enter the reply here.</p>
+<form method="post" class="card">
+<div class="grid">
+  {{ m.field('RFQ no.', 'rfq_no', 'text', readonly=True) }}
+  {{ m.field('Supplier', 'supplier_id', 'select', required=True, options=['(suppliers from the list)']) }}
+  {{ m.field('Supplier quotation ref.', 'quotation_ref', 'text') }}
+  {{ m.field('Quotation date', 'quotation_date', 'date', required=True) }}
+  {{ m.field('Valid until', 'valid_until', 'date') }}
+  {{ m.field('Notes', 'notes', 'textarea', col=2) }}
+</div>
+<h2>Items</h2>
+<table class="data lines" id="lines">
+<thead><tr><th>Item</th><th>Qty offered</th><th>Unit price</th><th>Lead time (days)</th><th>Amount</th><th></th></tr></thead>
+<tbody>
+<tr class="line-row"><td><input type="text" name="item[]" readonly></td><td><input type="number" min="0" name="qty_offered[]"></td><td><input type="number" min="0" name="unit_price[]"></td><td><input type="number" min="0" name="lead_time_days[]"></td><td><input type="number" min="0" name="amount[]" readonly></td><td><button type="button" class="btn small ghost" data-remove-row>Remove</button></td></tr>
+</tbody>
+</table>
+<div class="actions">
+  <button type="submit" name="action" value="save_quotation" class="btn primary">Save quotation</button>
+  <a class="btn ghost" href="{{ url_for('purchasing.ref_detail', ref_id=ref_id) }}">Back</a>
+</div>
+</form>
+{% endblock %}

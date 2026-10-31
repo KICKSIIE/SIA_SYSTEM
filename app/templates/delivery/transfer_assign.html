@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Assign Driver and Vehicle{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Assign Driver and Vehicle</h1><span class="badge">Draft</span></div>
+<p class="note">The driver and vehicle appear on the TS.</p>
+<form method="post" class="card">
+<div class="grid">
+  {{ m.field('TS no.', 'ts_no', 'text', readonly=True) }}
+  {{ m.field('RF no.', 'rf_no', 'text', readonly=True) }}
+  {{ m.field('From', 'from_location', 'text', readonly=True) }}
+  {{ m.field('To', 'to_location', 'text', readonly=True) }}
+  {{ m.field('Driver', 'driver_id', 'select', required=True, options=['(drivers from the list)']) }}
+  {{ m.field('Vehicle', 'vehicle_id', 'select', required=True, options=['(vehicles from the list)']) }}
+  {{ m.field('Remarks', 'remarks', 'textarea', col=2) }}
+</div>
+<h2>Items</h2>
+<table class="data lines" id="lines">
+<thead><tr><th>Item</th><th>Qty to release</th><th></th></tr></thead>
+<tbody>
+<tr class="line-row"><td><input type="text" name="item[]" readonly></td><td><input type="number" min="0" name="qty_released[]" readonly></td><td><button type="button" class="btn small ghost" data-remove-row>Remove</button></td></tr>
+</tbody>
+</table>
+<div class="actions">
+  <button type="submit" name="action" value="save_assignment" class="btn primary">Save assignment</button>
+  <a class="btn ghost" href="{{ url_for('delivery.transfer_detail', ts_id=ts_id) }}">Back</a>
+</div>
+</form>
+{% endblock %}

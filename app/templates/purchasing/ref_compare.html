@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Choose Supplier{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Choose Supplier</h1></div>
+<p class="note">Regular supplier: no RFQ needed. The agreed price is used. The owner approves once.</p>
+<form method="post" class="card">
+<div class="grid">
+  {{ m.field('REF no.', 'ref_no', 'text', readonly=True) }}
+  {{ m.field('Basis', 'basis', 'select', required=True, options=['Quotation', 'Agreed price of a regular supplier']) }}
+  {{ m.field('Supplier', 'supplier_id', 'select', required=True, options=['(suppliers from the list)']) }}
+  {{ m.field('Quotation', 'quotation_id', 'select', options=['(quotations of this REF)']) }}
+</div>
+<h2>Items</h2>
+<table class="data lines" id="lines">
+<thead><tr><th>Item</th><th>Qty</th><th>Lowest quoted price</th><th>Selected price</th><th></th></tr></thead>
+<tbody>
+<tr class="line-row"><td><input type="text" name="item[]" readonly></td><td><input type="number" min="0" name="qty[]" readonly></td><td><input type="number" min="0" name="lowest[]" readonly></td><td><input type="number" min="0" name="selected[]" readonly></td><td><button type="button" class="btn small ghost" data-remove-row>Remove</button></td></tr>
+</tbody>
+</table>
+<div class="actions">
+  <button type="submit" name="action" value="send_to_owner_for_approval" class="btn primary">Send to owner for approval</button>
+  <a class="btn ghost" href="{{ url_for('purchasing.ref_detail', ref_id=ref_id) }}">Back</a>
+</div>
+</form>
+{% endblock %}

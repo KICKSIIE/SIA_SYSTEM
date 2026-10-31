@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Receiving from Suppliers{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Receiving from Suppliers</h1></div>
+<div class="card">
+<div class="filters"><input type="search" placeholder="Search..."><select><option value="">Status: all</option><option>Sent</option><option>Partially received</option></select></div>
+<table class="data">
+<thead><tr><th>PO no.</th><th>Supplier</th><th>Expected</th><th>Items</th><th>Received so far</th><th>Status</th><th></th></tr></thead>
+<tbody>
+<tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td><a href="{{ url_for('delivery.receiving_check', po_id=1) }}">Open</a></td></tr>
+</tbody>
+</table>
+<p class="muted">No records yet. The row above is a placeholder so you can click through the screens.</p>
+</div>
+{% endblock %}

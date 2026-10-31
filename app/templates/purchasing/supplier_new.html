@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}New Supplier{% endblock %}
+{% block content %}
+<div class="page-head"><h1>New Supplier</h1></div>
+<p class="note">Agreed prices are only needed for regular suppliers.</p>
+<form method="post" class="card">
+<div class="grid">
+  {{ m.field('Supplier name', 'supplier_name', 'text', required=True, col=2) }}
+  {{ m.field('Contact person', 'contact_person', 'text') }}
+  {{ m.field('Email', 'email', 'email', required=True) }}
+  {{ m.field('Phone', 'phone', 'text') }}
+  {{ m.field('Address', 'address', 'text', col=2) }}
+  {{ m.field('Regular supplier', 'is_regular', 'checkbox', help=' RFQ can be skipped (agreed price)') }}
+  {{ m.field('Active', 'is_active', 'checkbox', help=' Active') }}
+</div>
+<h2>Items</h2>
+<table class="data lines" id="lines">
+<thead><tr><th>Item</th><th>Agreed price</th><th>Valid from</th><th>Valid to</th><th></th></tr></thead>
+<tbody>
+<tr class="line-row"><td><select name="item_id[]"><option value="">-- select --</option><option>(items from the list)</option></select></td><td><input type="number" min="0" name="agreed_price[]"></td><td><input type="date" name="valid_from[]"></td><td><input type="date" name="valid_to[]"></td><td><button type="button" class="btn small ghost" data-remove-row>Remove</button></td></tr>
+</tbody>
+</table>
+<button type="button" class="btn small" data-add-row="lines">+ Add item</button>
+<div class="actions">
+  <button type="submit" name="action" value="save_supplier" class="btn primary">Save supplier</button>
+  <a class="btn ghost" href="{{ url_for('purchasing.supplier_list') }}">Back</a>
+</div>
+</form>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Purchase Orders (PO){% endblock %}
+{% block content %}
+<div class="page-head"><h1>Purchase Orders (PO)</h1></div>
+<div class="card">
+<div class="filters"><input type="search" placeholder="Search..."><select><option value="">Status: all</option><option>Sent</option><option>Partially received</option><option>Received</option><option>Cancelled</option></select></div>
+<table class="data">
+<thead><tr><th>PO no.</th><th>Date</th><th>Supplier</th><th>REF no.</th><th>Total</th><th>Status</th><th></th></tr></thead>
+<tbody>
+<tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td><a href="{{ url_for('purchasing.po_detail', po_id=1) }}">Open</a></td></tr>
+</tbody>
+</table>
+<p class="muted">No records yet. The row above is a placeholder so you can click through the screens.</p>
+</div>
+{% endblock %}

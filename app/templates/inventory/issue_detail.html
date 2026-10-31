@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Sale / Stock Issue{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Sale / Stock Issue</h1></div>
+<div class="card">
+<h2>Details</h2>
+<dl class="info">
+  <div><dt>Issue no.</dt><dd>&ndash;</dd></div>
+  <div><dt>Date</dt><dd>&ndash;</dd></div>
+  <div><dt>Shop</dt><dd>&ndash;</dd></div>
+  <div><dt>Customer</dt><dd>&ndash;</dd></div>
+  <div><dt>Receipt / invoice no.</dt><dd>&ndash;</dd></div>
+  <div><dt>Recorded by</dt><dd>&ndash;</dd></div>
+</dl>
+<h2>Items</h2>
+<table class="data">
+<thead><tr><th>Item</th><th>Quantity</th></tr></thead>
+<tbody><tr class="sample"><td>&ndash;</td><td>&ndash;</td></tr></tbody>
+</table>
+<div class="actions">
+  <a class="btn ghost" href="javascript:history.back()">Back</a>
+</div>
+</div>
+{% endblock %}

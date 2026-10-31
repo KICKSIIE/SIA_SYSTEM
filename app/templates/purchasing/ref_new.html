@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}New Replenishment Form{% endblock %}
+{% block content %}
+<div class="page-head"><h1>New Replenishment Form</h1><span class="badge">Draft</span></div>
+<p class="note">Pre-filled from the alert: shortages from waiting RFs plus restock up to max level.</p>
+<form method="post" class="card">
+<div class="grid">
+  {{ m.field('REF no.', 'ref_no', 'text', value='auto', readonly=True) }}
+  {{ m.field('Date', 'ref_date', 'date', required=True) }}
+  {{ m.field('Warehouse', 'warehouse', 'text', value='your warehouse', readonly=True) }}
+  {{ m.field('Created by', 'created_by', 'text', value='you', readonly=True) }}
+  {{ m.field('From alert no.', 'alert_no', 'text', readonly=True) }}
+  {{ m.field('Remarks', 'remarks', 'textarea', col=2) }}
+</div>
+<h2>Items</h2>
+<table class="data lines" id="lines">
+<thead><tr><th>Item</th><th>Warehouse on hand</th><th>ROP</th><th>Reason</th><th>For RF no.</th><th>Qty needed</th><th></th></tr></thead>
+<tbody>
+<tr class="line-row"><td><select name="item_id[]"><option value="">-- select --</option><option>(items from the list)</option></select></td><td><input type="number" min="0" name="on_hand[]" readonly></td><td><input type="number" min="0" name="rop[]" readonly></td><td><select name="reason[]"><option value="">-- select --</option><option>Shortage</option><option>Below ROP</option></select></td><td><input type="text" name="rf_no[]" readonly></td><td><input type="number" min="0" name="qty_requested[]"></td><td><button type="button" class="btn small ghost" data-remove-row>Remove</button></td></tr>
+</tbody>
+</table>
+<button type="button" class="btn small" data-add-row="lines">+ Add item</button>
+<div class="actions">
+  <button type="submit" name="action" value="save_draft" class="btn secondary">Save draft</button>
+  <button type="submit" name="action" value="submit_ref" class="btn primary">Submit REF</button>
+  <a class="btn ghost" href="{{ url_for('purchasing.ref_list') }}">Back</a>
+</div>
+</form>
+{% endblock %}

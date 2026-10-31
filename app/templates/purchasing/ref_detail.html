@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Replenishment Form{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Replenishment Form</h1><span class="badge">Submitted</span></div>
+<div class="card">
+<h2>Details</h2>
+<dl class="info">
+  <div><dt>REF no.</dt><dd>&ndash;</dd></div>
+  <div><dt>Date</dt><dd>&ndash;</dd></div>
+  <div><dt>Warehouse</dt><dd>&ndash;</dd></div>
+  <div><dt>Created by</dt><dd>&ndash;</dd></div>
+  <div><dt>Supplier</dt><dd>&ndash;</dd></div>
+  <div><dt>Status</dt><dd>&ndash;</dd></div>
+</dl>
+<h2>Items</h2>
+<table class="data">
+<thead><tr><th>Item</th><th>Qty requested</th><th>Reason</th><th>For RF</th><th>Qty received</th></tr></thead>
+<tbody><tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td></tr></tbody>
+</table>
+<h2>RFQs and quotations</h2>
+<table class="data">
+<thead><tr><th>RFQ no.</th><th>Supplier</th><th>Sent</th><th>Replied</th><th>Total quoted</th></tr></thead>
+<tbody><tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td></tr></tbody>
+</table>
+<div class="actions">
+  {% if current_role in ['warehouse_manager'] %}<a class="btn primary" href="{{ url_for('purchasing.rfq_new', ref_id=ref_id) }}">Create RFQ</a>{% endif %}
+  {% if current_role in ['warehouse_manager'] %}<a class="btn secondary" href="{{ url_for('purchasing.quotation_new', ref_id=ref_id) }}">Record quotation</a>{% endif %}
+  {% if current_role in ['warehouse_manager'] %}<a class="btn primary" href="{{ url_for('purchasing.ref_compare', ref_id=ref_id) }}">Choose supplier and send for approval</a>{% endif %}
+  {% if current_role in ['warehouse_manager'] %}<a class="btn danger" href="{{ url_for('purchasing.ref_cancel', ref_id=ref_id) }}">Cancel REF</a>{% endif %}
+  <a class="btn ghost" href="javascript:history.back()">Back</a>
+</div>
+</div>
+{% endblock %}

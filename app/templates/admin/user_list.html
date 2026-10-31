@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Users{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Users</h1>{% if current_role in ['owner'] %}<a class="btn primary" href="{{ url_for('admin.user_new') }}">+ New</a>{% endif %}</div>
+<div class="card">
+<div class="filters"><input type="search" placeholder="Search..."></div>
+<table class="data">
+<thead><tr><th>Username</th><th>Full name</th><th>Role</th><th>Location</th><th>Active</th><th></th></tr></thead>
+<tbody>
+<tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td><a href="{{ url_for('admin.user_edit', user_id=1) }}">Open</a></td></tr>
+</tbody>
+</table>
+<p class="muted">No records yet. The row above is a placeholder so you can click through the screens.</p>
+</div>
+{% endblock %}

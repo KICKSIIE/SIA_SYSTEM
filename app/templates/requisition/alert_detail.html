@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Low-stock Alert{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Low-stock Alert</h1><span class="badge">Active</span></div>
+<div class="card">
+<h2>Details</h2>
+<dl class="info">
+  <div><dt>Alert no.</dt><dd>&ndash;</dd></div>
+  <div><dt>Shop</dt><dd>&ndash;</dd></div>
+  <div><dt>Created</dt><dd>&ndash;</dd></div>
+  <div><dt>Status</dt><dd>&ndash;</dd></div>
+</dl>
+<h2>Items</h2>
+<table class="data">
+<thead><tr><th>Item</th><th>Shop on hand</th><th>ROP</th><th>Suggested qty</th></tr></thead>
+<tbody><tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td></tr></tbody>
+</table>
+<div class="actions">
+  {% if current_role in ['shop_manager'] %}<a class="btn primary" href="{{ url_for('requisition.rf_new', alert_id=1) }}">Create RF from this alert</a>{% endif %}
+  {% if current_role in ['shop_manager'] %}<a class="btn secondary" href="{{ url_for('requisition.alert_dismiss', alert_id=alert_id) }}">Dismiss alert</a>{% endif %}
+  <a class="btn ghost" href="javascript:history.back()">Back</a>
+</div>
+</div>
+{% endblock %}

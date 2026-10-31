@@ -1,0 +1,30 @@
+# Secrets and local settings (never commit these)
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs and local files
+*.log
+instance/
+*.sqlite3
+
+# Local database backups and uploads
+*.dump
+*.bak

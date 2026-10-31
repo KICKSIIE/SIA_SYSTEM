@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Sign and Release TS{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Sign and Release TS</h1><span class="badge">Loaded</span></div>
+<p class="note">Releasing deducts the items from warehouse stock and sets the TS to In transit.</p>
+<form method="post" class="card">
+<div class="grid">
+  {{ m.field('TS no.', 'ts_no', 'text', readonly=True) }}
+  {{ m.field('Driver', 'driver', 'text', readonly=True) }}
+  {{ m.field('Vehicle', 'vehicle', 'text', readonly=True) }}
+  {{ m.field('Released by', 'released_by', 'text', value='you', readonly=True) }}
+  {{ m.field('Warehouse manager signature', 'sig_wm', 'sign') }}
+  {{ m.field('Driver signature', 'sig_driver', 'sign') }}
+  {{ m.field('Remarks', 'remarks', 'textarea', col=2) }}
+</div>
+<div class="actions">
+  <button type="submit" name="action" value="release_items_in_transit_" class="btn primary">Release (items in transit)</button>
+  <a class="btn ghost" href="{{ url_for('delivery.transfer_detail', ts_id=ts_id) }}">Back</a>
+</div>
+</form>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Requisition Forms (RF){% endblock %}
+{% block content %}
+<div class="page-head"><h1>Requisition Forms (RF)</h1>{% if current_role in ['shop_manager'] %}<a class="btn primary" href="{{ url_for('requisition.rf_new') }}">+ New</a>{% endif %}</div>
+<div class="card">
+<div class="filters"><input type="search" placeholder="Search..."><select><option value="">Status: all</option><option>Draft</option><option>Open</option><option>Partially delivered</option><option>Closed</option><option>Cancelled</option></select></div>
+<table class="data">
+<thead><tr><th>RF no.</th><th>Date</th><th>Shop</th><th>Items</th><th>Delivered</th><th>Status</th><th></th></tr></thead>
+<tbody>
+<tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td><a href="{{ url_for('requisition.rf_detail', rf_id=1) }}">Open</a></td></tr>
+</tbody>
+</table>
+<p class="muted">No records yet. The row above is a placeholder so you can click through the screens.</p>
+</div>
+{% endblock %}

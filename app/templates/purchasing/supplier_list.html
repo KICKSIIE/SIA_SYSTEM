@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Suppliers{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Suppliers</h1>{% if current_role in ['warehouse_manager'] %}<a class="btn primary" href="{{ url_for('purchasing.supplier_new') }}">+ New</a>{% endif %}</div>
+<div class="card">
+<div class="filters"><input type="search" placeholder="Search..."><select><option value="">Show: all</option><option>All</option><option>Regular suppliers</option></select></div>
+<table class="data">
+<thead><tr><th>Supplier</th><th>Contact person</th><th>Email</th><th>Phone</th><th>Regular supplier</th><th>Active</th><th></th></tr></thead>
+<tbody>
+<tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td><a href="{{ url_for('purchasing.supplier_edit', supplier_id=1) }}">Open</a></td></tr>
+</tbody>
+</table>
+<p class="muted">No records yet. The row above is a placeholder so you can click through the screens.</p>
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Cancel REF{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Cancel REF</h1></div>
+<form method="post" class="card">
+<div class="grid">
+  {{ m.field('REF no.', 'ref_no', 'text', readonly=True) }}
+  {{ m.field('Reason for cancelling', 'cancel_reason', 'textarea', required=True, col=2) }}
+</div>
+<div class="actions">
+  <button type="submit" name="action" value="cancel_ref" class="btn danger">Cancel REF</button>
+  <a class="btn ghost" href="{{ url_for('purchasing.ref_detail', ref_id=ref_id) }}">Back</a>
+</div>
+</form>
+{% endblock %}

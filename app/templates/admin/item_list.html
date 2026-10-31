@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Items{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Items</h1>{% if current_role in ['inventory_manager', 'owner'] %}<a class="btn primary" href="{{ url_for('admin.item_new') }}">+ New</a>{% endif %}</div>
+<div class="card">
+<div class="filters"><input type="search" placeholder="Search..."><select><option value="">Category: all</option><option>Tire</option><option>Tube</option><option>Flap</option><option>Other</option></select></div>
+<table class="data">
+<thead><tr><th>Item code</th><th>Item name</th><th>Brand</th><th>Size</th><th>Ply</th><th>Category</th><th>Active</th><th></th></tr></thead>
+<tbody>
+<tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td><a href="{{ url_for('admin.item_edit', item_id=1) }}">Open</a></td></tr>
+</tbody>
+</table>
+<p class="muted">No records yet. The row above is a placeholder so you can click through the screens.</p>
+</div>
+{% endblock %}

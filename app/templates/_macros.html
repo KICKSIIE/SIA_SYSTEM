@@ -1,0 +1,24 @@
+{% macro field(label, name, type='text', value='', readonly=False, required=False, options=None, col=1, help='') -%}
+<div class="field span-{{ col }}">
+  {% if type == 'checkbox' -%}
+    <label class="check"><input type="checkbox" id="{{ name }}" name="{{ name }}" {% if value %}checked{% endif %}> {{ label }}{% if help %} <small>{{ help }}</small>{% endif %}</label>
+  {%- else -%}
+    <label for="{{ name }}">{{ label }}{% if required %}<span class="req">*</span>{% endif %}</label>
+    {% if type == 'select' -%}
+      <select id="{{ name }}" name="{{ name }}" {% if readonly %}disabled{% endif %}>
+        <option value="">-- select --</option>
+        {% for o in (options or []) %}<option>{{ o }}</option>{% endfor %}
+      </select>
+    {%- elif type == 'multiselect' -%}
+      <select id="{{ name }}" name="{{ name }}" multiple size="4">{% for o in (options or []) %}<option>{{ o }}</option>{% endfor %}</select>
+    {%- elif type == 'textarea' -%}
+      <textarea id="{{ name }}" name="{{ name }}" rows="3">{{ value }}</textarea>
+    {%- elif type == 'sign' -%}
+      <div class="sign-line"></div>
+    {%- else -%}
+      <input type="{{ type }}" id="{{ name }}" name="{{ name }}" value="{{ value }}" {% if readonly %}readonly{% endif %} {% if required %}required{% endif %}>
+    {%- endif %}
+    {% if help and type != 'sign' %}<small>{{ help }}</small>{% endif %}
+  {%- endif %}
+</div>
+{%- endmacro %}

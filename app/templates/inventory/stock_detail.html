@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Item Stock Card{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Item Stock Card</h1></div>
+<div class="card">
+<h2>Details</h2>
+<dl class="info">
+  <div><dt>Item</dt><dd>&ndash;</dd></div>
+  <div><dt>Brand</dt><dd>&ndash;</dd></div>
+  <div><dt>Size / ply</dt><dd>&ndash;</dd></div>
+  <div><dt>Category</dt><dd>&ndash;</dd></div>
+</dl>
+<h2>Items</h2>
+<table class="data">
+<thead><tr><th>Location</th><th>On hand</th><th>Reserved</th><th>ROP</th><th>Max level</th></tr></thead>
+<tbody><tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td></tr></tbody>
+</table>
+<h2>Stock ledger</h2>
+<table class="data">
+<thead><tr><th>Date</th><th>Location</th><th>Movement</th><th>Qty</th><th>Balance</th><th>Reference</th></tr></thead>
+<tbody><tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td></tr></tbody>
+</table>
+<div class="actions">
+  {% if current_role in ['inventory_manager'] %}<a class="btn secondary" href="{{ url_for('inventory.rop_edit', item_id=item_id) }}">Edit ROP settings</a>{% endif %}
+  <a class="btn ghost" href="javascript:history.back()">Back</a>
+</div>
+</div>
+{% endblock %}

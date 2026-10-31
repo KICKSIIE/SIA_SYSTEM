@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}New Stock Adjustment{% endblock %}
+{% block content %}
+<div class="page-head"><h1>New Stock Adjustment</h1><span class="badge">Draft</span></div>
+<p class="note">The inventory manager must approve before the stock changes.</p>
+<form method="post" class="card">
+<div class="grid">
+  {{ m.field('Adjustment no.', 'adj_no', 'text', value='auto', readonly=True) }}
+  {{ m.field('Date', 'adj_date', 'date', required=True) }}
+  {{ m.field('Location', 'location', 'text', value='your location', readonly=True) }}
+  {{ m.field('Reason', 'reason', 'select', required=True, options=['Count difference', 'Damaged', 'Lost', 'Delivery variance', 'Other']) }}
+  {{ m.field('Linked AR no. (optional)', 'ar_no', 'text') }}
+  {{ m.field('Remarks', 'remarks', 'textarea', col=2) }}
+</div>
+<h2>Items</h2>
+<table class="data lines" id="lines">
+<thead><tr><th>Item</th><th>System qty</th><th>Actual qty</th><th>Difference</th><th>Remarks</th><th></th></tr></thead>
+<tbody>
+<tr class="line-row"><td><select name="item_id[]"><option value="">-- select --</option><option>(items from the list)</option></select></td><td><input type="number" min="0" name="qty_system[]" readonly></td><td><input type="number" min="0" name="qty_actual[]"></td><td><input type="number" min="0" name="qty_diff[]" readonly></td><td><input type="text" name="item_remarks[]"></td><td><button type="button" class="btn small ghost" data-remove-row>Remove</button></td></tr>
+</tbody>
+</table>
+<button type="button" class="btn small" data-add-row="lines">+ Add item</button>
+<div class="actions">
+  <button type="submit" name="action" value="submit_for_approval" class="btn primary">Submit for approval</button>
+  <a class="btn ghost" href="{{ url_for('inventory.adjustment_list') }}">Back</a>
+</div>
+</form>
+{% endblock %}

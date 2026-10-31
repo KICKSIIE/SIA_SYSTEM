@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Check Goods (RM){% endblock %}
+{% block content %}
+<div class="page-head"><h1>Check Goods (RM)</h1><span class="badge">New</span></div>
+<p class="note">Accepted + rejected must equal delivered. Rejected or missing items create a discrepancy report.</p>
+<form method="post" class="card">
+<div class="grid">
+  {{ m.field('RM no.', 'rm_no', 'text', value='auto', readonly=True) }}
+  {{ m.field('PO no.', 'po_no', 'text', readonly=True) }}
+  {{ m.field('Supplier', 'supplier', 'text', readonly=True) }}
+  {{ m.field('Supplier DR no.', 'supplier_dr_no', 'text', required=True) }}
+  {{ m.field('Date received', 'received_date', 'date', required=True) }}
+  {{ m.field('Received by', 'received_by', 'text', value='you', readonly=True) }}
+  {{ m.field('Remarks', 'remarks', 'textarea', col=2) }}
+</div>
+<h2>Items</h2>
+<table class="data lines" id="lines">
+<thead><tr><th>Item</th><th>Qty ordered</th><th>Qty delivered</th><th>Qty accepted</th><th>Qty rejected</th><th>Reason</th><th></th></tr></thead>
+<tbody>
+<tr class="line-row"><td><input type="text" name="item[]" readonly></td><td><input type="number" min="0" name="qty_ordered[]" readonly></td><td><input type="number" min="0" name="qty_delivered[]"></td><td><input type="number" min="0" name="qty_accepted[]"></td><td><input type="number" min="0" name="qty_rejected[]"></td><td><input type="text" name="reject_reason[]"></td><td><button type="button" class="btn small ghost" data-remove-row>Remove</button></td></tr>
+</tbody>
+</table>
+<div class="actions">
+  <button type="submit" name="action" value="save_receiving_memo" class="btn primary">Save receiving memo</button>
+  <a class="btn ghost" href="{{ url_for('purchasing.po_detail', po_id=po_id) }}">Back</a>
+</div>
+</form>
+{% endblock %}

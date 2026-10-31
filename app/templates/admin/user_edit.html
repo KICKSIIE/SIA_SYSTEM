@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Edit User{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Edit User</h1></div>
+<p class="note">Owner only. Drivers and suppliers do not have accounts.</p>
+<form method="post" class="card">
+<div class="grid">
+  {{ m.field('Username', 'username', 'text', required=True) }}
+  {{ m.field('Full name', 'full_name', 'text', required=True) }}
+  {{ m.field('Email', 'email', 'email') }}
+  {{ m.field('Role', 'role_id', 'select', required=True, options=['Owner', 'Shop Manager', 'Shop Staff', 'Inventory Manager', 'Warehouse Manager', 'Warehouse Staff']) }}
+  {{ m.field('Location', 'location_id', 'select', options=['(shop or warehouse)']) }}
+  {{ m.field('New password', 'password', 'password', required=True) }}
+  {{ m.field('Active', 'is_active', 'checkbox', help=' Active') }}
+</div>
+<div class="actions">
+  <button type="submit" name="action" value="save_user" class="btn primary">Save user</button>
+  <a class="btn ghost" href="{{ url_for('admin.user_list') }}">Back</a>
+</div>
+</form>
+{% endblock %}

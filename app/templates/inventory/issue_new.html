@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Record Sale / Stock Issue{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Record Sale / Stock Issue</h1><span class="badge">New</span></div>
+<p class="note">A simple stock-out record. No prices. Stock cannot go below zero.</p>
+<form method="post" class="card">
+<div class="grid">
+  {{ m.field('Issue no.', 'issue_no', 'text', value='auto', readonly=True) }}
+  {{ m.field('Date', 'issue_date', 'date', required=True) }}
+  {{ m.field('Shop', 'location', 'text', value='your shop', readonly=True) }}
+  {{ m.field('Customer name (optional)', 'customer_name', 'text', help='for example: walk-in customer') }}
+  {{ m.field('Receipt / invoice no.', 'document_ref', 'text') }}
+  {{ m.field('Reason', 'reason', 'select', required=True, options=['Sale', 'Other']) }}
+  {{ m.field('Remarks', 'remarks', 'textarea', col=2) }}
+</div>
+<h2>Items</h2>
+<table class="data lines" id="lines">
+<thead><tr><th>Item</th><th>On hand</th><th>Quantity</th><th></th></tr></thead>
+<tbody>
+<tr class="line-row"><td><select name="item_id[]"><option value="">-- select --</option><option>(items from the list)</option></select></td><td><input type="number" min="0" name="on_hand[]" readonly></td><td><input type="number" min="0" name="qty[]"></td><td><button type="button" class="btn small ghost" data-remove-row>Remove</button></td></tr>
+</tbody>
+</table>
+<button type="button" class="btn small" data-add-row="lines">+ Add item</button>
+<div class="actions">
+  <button type="submit" name="action" value="save_entry" class="btn primary">Save entry</button>
+  <a class="btn ghost" href="{{ url_for('inventory.issue_list') }}">Back</a>
+</div>
+</form>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Receive Delivery (AR){% endblock %}
+{% block content %}
+<div class="page-head"><h1>Receive Delivery (AR)</h1><span class="badge">In transit</span></div>
+<p class="note">Only the quantity actually received is added to shop stock. A variance is sent to the warehouse manager.</p>
+<form method="post" class="card">
+<div class="grid">
+  {{ m.field('AR no.', 'ar_no', 'text', value='auto', readonly=True) }}
+  {{ m.field('TS no.', 'ts_no', 'text', readonly=True) }}
+  {{ m.field('From', 'from_location', 'text', readonly=True) }}
+  {{ m.field('Driver / vehicle', 'driver_vehicle', 'text', readonly=True) }}
+  {{ m.field('Date received', 'received_at', 'date', required=True) }}
+  {{ m.field('Received by', 'received_by', 'text', value='you', readonly=True) }}
+  {{ m.field('Remarks', 'remarks', 'textarea', col=2) }}
+  {{ m.field('Shop manager signature', 'sig_shop', 'sign') }}
+</div>
+<h2>Items</h2>
+<table class="data lines" id="lines">
+<thead><tr><th>Item</th><th>Qty on TS</th><th>Qty received</th><th>Variance</th><th>Reason (if any)</th><th></th></tr></thead>
+<tbody>
+<tr class="line-row"><td><input type="text" name="item[]" readonly></td><td><input type="number" min="0" name="qty_expected[]" readonly></td><td><input type="number" min="0" name="qty_received[]"></td><td><input type="number" min="0" name="qty_variance[]" readonly></td><td><input type="text" name="variance_reason[]"></td><td><button type="button" class="btn small ghost" data-remove-row>Remove</button></td></tr>
+</tbody>
+</table>
+<div class="actions">
+  <button type="submit" name="action" value="sign_ar" class="btn primary">Sign AR</button>
+  <a class="btn ghost" href="{{ url_for('delivery.delivery_list') }}">Back</a>
+</div>
+</form>
+{% endblock %}

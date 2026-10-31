@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Transfer Slip{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Transfer Slip</h1><span class="badge">Draft</span></div>
+<div class="card">
+<h2>Details</h2>
+<dl class="info">
+  <div><dt>TS no.</dt><dd>&ndash;</dd></div>
+  <div><dt>Date</dt><dd>&ndash;</dd></div>
+  <div><dt>RF no.</dt><dd>&ndash;</dd></div>
+  <div><dt>From</dt><dd>&ndash;</dd></div>
+  <div><dt>To</dt><dd>&ndash;</dd></div>
+  <div><dt>Driver</dt><dd>&ndash;</dd></div>
+  <div><dt>Vehicle</dt><dd>&ndash;</dd></div>
+  <div><dt>Status</dt><dd>&ndash;</dd></div>
+</dl>
+<h2>Items</h2>
+<table class="data">
+<thead><tr><th>Item</th><th>Qty released</th><th>Loaded</th></tr></thead>
+<tbody><tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td></tr></tbody>
+</table>
+<div class="actions">
+  {% if current_role in ['warehouse_manager'] %}<a class="btn primary" href="{{ url_for('delivery.transfer_assign', ts_id=ts_id) }}">Assign driver and vehicle</a>{% endif %}
+  {% if current_role in ['warehouse_staff'] %}<a class="btn primary" href="{{ url_for('delivery.transfer_load', ts_id=ts_id) }}">Loading check</a>{% endif %}
+  {% if current_role in ['warehouse_manager'] %}<a class="btn primary" href="{{ url_for('delivery.transfer_release', ts_id=ts_id) }}">Sign and release</a>{% endif %}
+  <a class="btn ghost" href="javascript:history.back()">Back</a>
+</div>
+</div>
+{% endblock %}

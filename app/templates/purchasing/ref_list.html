@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Replenishment Forms (REF){% endblock %}
+{% block content %}
+<div class="page-head"><h1>Replenishment Forms (REF)</h1>{% if current_role in ['warehouse_manager'] %}<a class="btn primary" href="{{ url_for('purchasing.ref_new') }}">+ New</a>{% endif %}</div>
+<div class="card">
+<div class="filters"><input type="search" placeholder="Search..."><select><option value="">Status: all</option><option>Draft</option><option>Submitted</option><option>RFQ sent</option><option>For approval</option><option>Approved</option><option>Receiving</option><option>Closed</option><option>Cancelled</option></select></div>
+<table class="data">
+<thead><tr><th>REF no.</th><th>Date</th><th>Items</th><th>Supplier</th><th>Status</th><th></th></tr></thead>
+<tbody>
+<tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td><a href="{{ url_for('purchasing.ref_detail', ref_id=1) }}">Open</a></td></tr>
+</tbody>
+</table>
+<p class="muted">No records yet. The row above is a placeholder so you can click through the screens.</p>
+</div>
+{% endblock %}

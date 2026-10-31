@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Reports{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Reports</h1></div>
+<div class="cards">
+  <div class="tile"><h3>Stock summary</h3><p>On hand, reserved and available per item and location</p></div>
+  <div class="tile"><h3>Items below ROP</h3><p>What needs restocking</p></div>
+  <div class="tile"><h3>RF / REF / PO status</h3><p>Where each document is</p></div>
+  <div class="tile"><h3>Deliveries and variances</h3><p>TS, AR and discrepancies</p></div>
+  <div class="tile"><h3>Stock ledger</h3><p>Every IN and OUT per item</p></div>
+  <div class="tile"><h3>Audit log</h3><p>Who changed what and when</p></div>
+</div>
+<p class="note">Report layouts come after the main screens are connected.</p>
+{% endblock %}

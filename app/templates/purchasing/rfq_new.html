@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}New RFQ{% endblock %}
+{% block content %}
+<div class="page-head"><h1>New RFQ</h1><span class="badge">Draft</span></div>
+<p class="note">The RFQ is pre-filled from the REF and sent to the suppliers by email.</p>
+<form method="post" class="card">
+<div class="grid">
+  {{ m.field('RFQ no.', 'rfq_no', 'text', value='auto', readonly=True) }}
+  {{ m.field('Date', 'rfq_date', 'date', readonly=True) }}
+  {{ m.field('REF no.', 'ref_no', 'text', readonly=True) }}
+  {{ m.field('Reply deadline', 'reply_deadline', 'date') }}
+  {{ m.field('Send to suppliers', 'supplier_ids', 'multiselect', required=True, options=['(suppliers from the list)']) }}
+  {{ m.field('Terms', 'terms', 'textarea', col=2) }}
+</div>
+<h2>Items</h2>
+<table class="data lines" id="lines">
+<thead><tr><th>Item</th><th>Qty</th><th></th></tr></thead>
+<tbody>
+<tr class="line-row"><td><input type="text" name="item[]" readonly></td><td><input type="number" min="0" name="qty[]" readonly></td><td><button type="button" class="btn small ghost" data-remove-row>Remove</button></td></tr>
+</tbody>
+</table>
+<div class="actions">
+  <button type="submit" name="action" value="send_rfq_by_email" class="btn primary">Send RFQ by email</button>
+  <a class="btn ghost" href="{{ url_for('purchasing.ref_detail', ref_id=ref_id) }}">Back</a>
+</div>
+</form>
+{% endblock %}

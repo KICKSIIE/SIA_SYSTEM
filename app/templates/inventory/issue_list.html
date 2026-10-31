@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Sales / Stock Issues{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Sales / Stock Issues</h1>{% if current_role in ['shop_staff', 'shop_manager'] %}<a class="btn primary" href="{{ url_for('inventory.issue_new') }}">+ New</a>{% endif %}</div>
+<div class="card">
+<div class="filters"><input type="search" placeholder="Search..."><select><option value="">Date: all</option><option>Today</option><option>This week</option><option>This month</option></select></div>
+<table class="data">
+<thead><tr><th>Issue no.</th><th>Date</th><th>Customer</th><th>Receipt / invoice no.</th><th>Items</th><th>Recorded by</th><th></th></tr></thead>
+<tbody>
+<tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td><a href="{{ url_for('inventory.issue_detail', issue_id=1) }}">Open</a></td></tr>
+</tbody>
+</table>
+<p class="muted">No records yet. The row above is a placeholder so you can click through the screens.</p>
+</div>
+{% endblock %}

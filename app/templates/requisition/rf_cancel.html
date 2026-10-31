@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Cancel RF{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Cancel RF</h1><span class="badge">Open</span></div>
+<p class="note">Only an RF that is not yet fully delivered can be cancelled.</p>
+<form method="post" class="card">
+<div class="grid">
+  {{ m.field('RF no.', 'rf_no', 'text', value='RF-0000-0000', readonly=True) }}
+  {{ m.field('Reason for cancelling', 'cancel_reason', 'textarea', required=True, col=2) }}
+</div>
+<div class="actions">
+  <button type="submit" name="action" value="cancel_rf" class="btn danger">Cancel RF</button>
+  <a class="btn ghost" href="{{ url_for('requisition.rf_detail', rf_id=rf_id) }}">Back</a>
+</div>
+</form>
+{% endblock %}

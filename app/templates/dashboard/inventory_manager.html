@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Dashboard</h1><span class="badge">Inventory Manager</span></div>
+<div class="cards">
+  <a class="tile" href="{{ url_for('inventory.stock_list') }}"><h3>Items below ROP</h3><p>Shop: 0   Warehouse: 0</p></a>
+  <a class="tile" href="{{ url_for('inventory.rop_list') }}"><h3>Items without ROP</h3><p>Set ROP for new items: 0</p></a>
+  <a class="tile" href="{{ url_for('inventory.adjustment_list') }}"><h3>Adjustments to approve</h3><p>Pending: 0</p></a>
+  <a class="tile" href="{{ url_for('inventory.rop_list') }}"><h3>ROP settings</h3><p>Set ROP, max level and lead time</p></a>
+</div>
+<p class="note">Numbers are placeholders until the screens are connected to the database.</p>
+{% endblock %}

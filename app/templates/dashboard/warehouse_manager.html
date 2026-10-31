@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Dashboard</h1><span class="badge">Warehouse Manager</span></div>
+<div class="cards">
+  <a class="tile" href="{{ url_for('inventory.rfqueue_list') }}"><h3>RF queue</h3><p>RFs waiting for review: 0</p></a>
+  <a class="tile" href="{{ url_for('delivery.transfer_list') }}"><h3>Transfer slips</h3><p>To assign or release: 0</p></a>
+  <a class="tile" href="{{ url_for('purchasing.alert_list') }}"><h3>Restock alerts</h3><p>Active alerts: 0</p></a>
+  <a class="tile" href="{{ url_for('purchasing.ref_list') }}"><h3>Replenishment forms</h3><p>Open REFs: 0</p></a>
+  <a class="tile" href="{{ url_for('purchasing.po_list') }}"><h3>Purchase orders</h3><p>Waiting for delivery: 0</p></a>
+  <a class="tile" href="{{ url_for('delivery.discrepancy_list') }}"><h3>Discrepancy reports</h3><p>Open: 0</p></a>
+</div>
+<p class="note">Numbers are placeholders until the screens are connected to the database.</p>
+{% endblock %}

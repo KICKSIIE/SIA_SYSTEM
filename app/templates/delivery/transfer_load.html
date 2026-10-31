@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Loading Check{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Loading Check</h1><span class="badge">Assigned</span></div>
+<p class="note">Tick each line after counting the items against the TS.</p>
+<form method="post" class="card">
+<div class="grid">
+  {{ m.field('TS no.', 'ts_no', 'text', readonly=True) }}
+  {{ m.field('Driver', 'driver', 'text', readonly=True) }}
+  {{ m.field('Vehicle', 'vehicle', 'text', readonly=True) }}
+</div>
+<h2>Items</h2>
+<table class="data lines" id="lines">
+<thead><tr><th>Item</th><th>Qty on TS</th><th>Loaded and checked</th><th></th></tr></thead>
+<tbody>
+<tr class="line-row"><td><input type="text" name="item[]" readonly></td><td><input type="number" min="0" name="qty_released[]" readonly></td><td><input type="checkbox" name="loaded[]"></td><td><button type="button" class="btn small ghost" data-remove-row>Remove</button></td></tr>
+</tbody>
+</table>
+<div class="actions">
+  <button type="submit" name="action" value="confirm_items_loaded" class="btn primary">Confirm items loaded</button>
+  <a class="btn ghost" href="{{ url_for('delivery.transfer_detail', ts_id=ts_id) }}">Back</a>
+</div>
+</form>
+{% endblock %}
