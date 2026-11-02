@@ -22,3 +22,13 @@
   {%- endif %}
 </div>
 {%- endmacro %}
+
+{% macro pager(res, endpoint, args) -%}
+{% if res.pages > 1 %}
+<div class="pager">
+  {% if res.page > 1 %}<a href="{{ url_for(endpoint, **dict(args.to_dict(), page=res.page - 1)) }}">&laquo; Previous</a>{% endif %}
+  <span>Page {{ res.page }} of {{ res.pages }} ({{ res.total }} rows)</span>
+  {% if res.page < res.pages %}<a href="{{ url_for(endpoint, **dict(args.to_dict(), page=res.page + 1)) }}">Next &raquo;</a>{% endif %}
+</div>
+{% else %}<p class="muted">{{ res.total }} row{{ '' if res.total == 1 else 's' }}</p>{% endif %}
+{%- endmacro %}

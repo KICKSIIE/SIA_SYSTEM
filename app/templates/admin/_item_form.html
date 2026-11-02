@@ -1,0 +1,21 @@
+<div class="grid">
+  <div class="field span-1"><label for="category">Category<span class="req">*</span></label>
+    <select id="category" name="category">{% for k, label in categories %}<option value="{{ k }}" {{ 'selected' if f.get('category') == k }}>{{ label }}</option>{% endfor %}</select></div>
+  <div class="field span-1"><label for="brand">Brand<span class="req">*</span></label>
+    <input type="text" id="brand" name="brand" list="brand-list" maxlength="50" value="{{ f.get('brand') or '' }}" required>
+    <datalist id="brand-list">{% for b in brands %}<option value="{{ b }}">{% endfor %}</datalist>
+    <small>Pick an existing brand so it is spelled the same. Type a new one only for a new brand.</small></div>
+  <div class="field span-1"><label for="model">Model</label>
+    <input type="text" id="model" name="model" maxlength="40" value="{{ f.get('model') or '' }}"><small>The maker's code, for example BY616</small></div>
+  <div class="field span-1"><label for="size">Size</label>
+    <input type="text" id="size" name="size" maxlength="30" value="{{ f.get('size') or '' }}"><small>For example 215/75R17.5 or 1200-20</small></div>
+  <div class="field span-1"><label for="ply_rating">Ply rating</label>
+    <input type="text" id="ply_rating" name="ply_rating" maxlength="10" value="{{ f.get('ply_rating') or '' }}"><small>For example 18PR. Leave empty if none.</small></div>
+  <div class="field span-1"><label for="pattern">Pattern (tread)</label>
+    <input type="text" id="pattern" name="pattern" list="pattern-list" maxlength="40" value="{{ f.get('pattern') or '' }}">
+    <datalist id="pattern-list">{% for p in patterns %}<option value="{{ p }}">{% endfor %}</datalist>
+    <small>Required for tires. Tubes, flaps and rims use N/A automatically.</small></div>
+  <div class="field span-2"><label for="item_name">Item name</label>
+    <input type="text" id="item_name" name="item_name" maxlength="150" value="{{ f.get('item_name') or '' }}">
+    <small>Leave empty to build it from the specs (brand, size, ply, model).</small></div>
+</div>

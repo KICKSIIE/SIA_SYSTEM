@@ -2,24 +2,29 @@
 {% import '_macros.html' as m %}
 {% block title %}Review RF{% endblock %}
 {% block content %}
-<div class="page-head"><h1>Review RF</h1><span class="badge">Open</span></div>
-<p class="note">Reserve the full quantity, or only what is available. Short items stay open and go to a restock alert.</p>
+<div class="page-head"><h1>Review RF</h1><span class="badge">{{ rf.status|replace('_', ' ')|capitalize }}</span></div>
+<p class="note">Reserve the full quantity, or only what is available. Short items stay open and go to the restock alert. The transfer slip (TS) is created in the Delivery module.</p>
 <form method="post" class="card">
 <div class="grid">
-  {{ m.field('RF no.', 'rf_no', 'text', readonly=True) }}
-  {{ m.field('Date', 'rf_date', 'date', readonly=True) }}
-  {{ m.field('Shop', 'shop', 'text', readonly=True) }}
-  {{ m.field('Requested by', 'requested_by', 'text', readonly=True) }}
+  {{ m.field('RF no.', 'rf_no', 'text', value=rf.rf_no, readonly=True) }}
+  {{ m.field('Date', 'rf_date', 'text', value=(rf.submitted_at or rf.created_at)|string|truncate(10, True, ''), readonly=True) }}
+  {{ m.field('Shop', 'shop', 'text', value=rf.shop, readonly=True) }}
+  {{ m.field('Requested by', 'requested_by', 'text', value=rf.requested_by_name, readonly=True) }}
 </div>
 <h2>Items</h2>
-<table class="data lines" id="lines">
-<thead><tr><th>Item</th><th>Requested</th><th>Warehouse on hand</th><th>Already reserved</th><th>Available</th><th>Qty to reserve</th><th></th></tr></thead>
+<table class="data">
+<thead><tr><th>Item</th><th class="num">Requested</th><th class="num">Delivered</th><th class="num">Reserved so far</th><th class="num">Warehouse on hand</th><th class="num">Reserved (all RFs)</th><th class="num">Available</th><th>Qty to reserve now</th></tr></thead>
 <tbody>
-<tr class="line-row"><td><input type="text" name="item[]" readonly></td><td><input type="number" min="0" name="qty_requested[]" readonly></td><td><input type="number" min="0" name="on_hand[]" readonly></td><td><input type="number" min="0" name="reserved[]" readonly></td><td><input type="number" min="0" name="available[]" readonly></td><td><input type="number" min="0" name="qty_reserve[]"></td><td><button type="button" class="btn small ghost" data-remove-row>Remove</button></td></tr>
+{% for l in rf.lines %}
+<tr><td>{{ l.item_name }}<input type="hidden" name="rf_item_id[]" value="{{ l.rf_item_id }}"></td>
+<td class="num">{{ l.qty_requested }}</td><td class="num">{{ l.qty_delivered }}</td><td class="num">{{ l.qty_reserved }}</td>
+<td class="num">{{ l.on_hand }}</td><td class="num">{{ l.reserved_all }}</td><td class="num">{{ l.available }}</td>
+<td>{% if l.remaining > 0 %}<input type="number" min="0" max="{{ l.remaining }}" name="qty_reserve[]" value="{{ l.suggest }}"><small>{{ l.remaining }} still needed</small>{% else %}<input type="hidden" name="qty_reserve[]" value="0"><span class="muted">Fully reserved</span>{% endif %}</td></tr>
+{% endfor %}
 </tbody>
 </table>
 <div class="actions">
-  <button type="submit" name="action" value="reserve_stock_and_create_ts" class="btn primary">Reserve stock and create TS</button>
+  <button type="submit" name="action" value="reserve_stock" class="btn primary">Reserve stock</button>
   <a class="btn ghost" href="{{ url_for('inventory.rfqueue_list') }}">Back</a>
 </div>
 </form>

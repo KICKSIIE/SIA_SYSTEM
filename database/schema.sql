@@ -53,7 +53,8 @@ CREATE TABLE items (
     brand       VARCHAR(50)  NOT NULL,
     size        VARCHAR(30),
     ply_rating  VARCHAR(10),
-    pattern     VARCHAR(40),
+    pattern     VARCHAR(40),                                -- tread type: Rib, Lug, Mixed, All-Season, Loader (L3)... N/A for tubes, flaps, rims
+    model       VARCHAR(40),                                -- maker's model code, e.g. BY616
     category    VARCHAR(10)  NOT NULL DEFAULT 'tire' CHECK (category IN ('tire', 'tube', 'flap', 'other')),
     unit        VARCHAR(10)  NOT NULL DEFAULT 'pc',
     is_active   BOOLEAN      NOT NULL DEFAULT TRUE,
@@ -67,6 +68,7 @@ CREATE TABLE item_location_settings (
     rop            INTEGER NOT NULL DEFAULT 0 CHECK (rop >= 0),
     max_level      INTEGER NOT NULL DEFAULT 0,
     lead_time_days INTEGER NOT NULL DEFAULT 0 CHECK (lead_time_days >= 0),
+    rack           VARCHAR(30),                              -- where it is kept at this location, e.g. Rack A - Row 2
     updated_by     INTEGER REFERENCES users(id),
     updated_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
     PRIMARY KEY (item_id, location_id),
@@ -217,7 +219,17 @@ CREATE TABLE stock_issues (
     reason        VARCHAR(10) NOT NULL DEFAULT 'sale' CHECK (reason IN ('sale', 'other')),
     remarks       VARCHAR(200),
     recorded_by   INTEGER NOT NULL REFERENCES users(id),
-    created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+    created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
+    -- a mistaken sale: staff REQUESTS the void, the shop manager (or the owner) CONFIRMS it, then the stock goes back
+    status        VARCHAR(15) NOT NULL DEFAULT 'posted' CHECK (status IN ('posted', 'void_requested', 'voided')),
+    void_reason         VARCHAR(200),
+    void_requested_by   INTEGER REFERENCES users(id),
+    void_requested_at   TIMESTAMPTZ,
+    voided_by           INTEGER REFERENCES users(id),               -- who confirmed it
+    voided_at           TIMESTAMPTZ,
+    CHECK (status = 'posted' OR (void_reason IS NOT NULL AND void_requested_by IS NOT NULL)),
+    CHECK (status <> 'voided' OR voided_by IS NOT NULL),
+    CHECK (voided_by IS NULL OR voided_by <> void_requested_by)      -- nobody confirms their own request
 );
 
 CREATE TABLE stock_issue_items (

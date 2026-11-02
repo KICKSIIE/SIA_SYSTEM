@@ -4,13 +4,18 @@
 {% block content %}
 <div class="page-head"><h1>Stock Adjustments</h1>{% if current_role in ['warehouse_staff', 'warehouse_manager', 'shop_staff', 'shop_manager'] %}<a class="btn primary" href="{{ url_for('inventory.adjustment_new') }}">+ New</a>{% endif %}</div>
 <div class="card">
-<div class="filters"><input type="search" placeholder="Search..."><select><option value="">Status: all</option><option>Pending</option><option>Approved</option><option>Rejected</option></select></div>
+<form method="get" class="filters">
+  <input type="search" name="q" value="{{ f.get('q', '') }}" placeholder="Search adjustment no...">
+  <select name="status"><option value="">Status: all</option>{% for s in ['pending','approved','rejected'] %}<option value="{{ s }}" {{ 'selected' if f.get('status') == s }}>{{ s|capitalize }}</option>{% endfor %}</select>
+  <button class="btn" type="submit">Filter</button>
+</form>
 <table class="data">
-<thead><tr><th>Adj. no.</th><th>Date</th><th>Location</th><th>Reason</th><th>Items</th><th>Status</th><th></th></tr></thead>
+<thead><tr><th>Adj. no.</th><th>Date</th><th>Location</th><th>Reason</th><th class="num">Items</th><th>Status</th><th></th></tr></thead>
 <tbody>
-<tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td><a href="{{ url_for('inventory.adjustment_detail', adj_id=1) }}">Open</a></td></tr>
+{% for r in res.rows %}<tr><td>{{ r.adj_no }}</td><td>{{ (r.created_at|string)[:10] }}</td><td>{{ r.location }}</td><td>{{ r.reason|replace('_', ' ')|capitalize }}</td><td class="num">{{ r.n_items }}</td><td><span class="badge {{ 'warn' if r.status == 'pending' }}">{{ r.status|capitalize }}</span></td><td><a href="{{ url_for('inventory.adjustment_detail', adj_id=r.id) }}">Open</a></td></tr>
+{% else %}<tr><td colspan="7" class="muted">No adjustments yet.</td></tr>{% endfor %}
 </tbody>
 </table>
-<p class="muted">No records yet. The row above is a placeholder so you can click through the screens.</p>
+{{ m.pager(res, 'inventory.adjustment_list', f) }}
 </div>
 {% endblock %}

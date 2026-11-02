@@ -2,24 +2,44 @@
 {% import '_macros.html' as m %}
 {% block title %}Sale / Stock Issue{% endblock %}
 {% block content %}
-<div class="page-head"><h1>Sale / Stock Issue</h1></div>
+<div class="page-head"><h1>Sale / Stock Issue</h1><span class="badge {{ 'warn' if issue.status != 'posted' }}">{{ issue.status|replace('_', ' ')|capitalize }}</span></div>
 <div class="card">
 <h2>Details</h2>
 <dl class="info">
-  <div><dt>Issue no.</dt><dd>&ndash;</dd></div>
-  <div><dt>Date</dt><dd>&ndash;</dd></div>
-  <div><dt>Shop</dt><dd>&ndash;</dd></div>
-  <div><dt>Customer</dt><dd>&ndash;</dd></div>
-  <div><dt>Receipt / invoice no.</dt><dd>&ndash;</dd></div>
-  <div><dt>Recorded by</dt><dd>&ndash;</dd></div>
+  <div><dt>Issue no.</dt><dd>{{ issue.issue_no }}</dd></div>
+  <div><dt>Date</dt><dd>{{ issue.issue_date }}</dd></div>
+  <div><dt>Location</dt><dd>{{ issue.location }}</dd></div>
+  <div><dt>Customer</dt><dd>{{ issue.customer_name or '–' }}</dd></div>
+  <div><dt>Receipt / invoice no.</dt><dd>{{ issue.document_ref or '–' }}</dd></div>
+  <div><dt>Reason</dt><dd>{{ issue.reason|capitalize }}</dd></div>
+  <div><dt>Recorded by</dt><dd>{{ issue.recorded_by_name }}</dd></div>
+  <div><dt>Remarks</dt><dd>{{ issue.remarks or '–' }}</dd></div>
+  {% if issue.status != 'posted' %}<div><dt>Void reason</dt><dd>{{ issue.void_reason }}</dd></div>
+  <div><dt>Void requested by</dt><dd>{{ issue.void_requested_by_name }}</dd></div>{% endif %}
+  {% if issue.status == 'voided' %}<div><dt>Confirmed by</dt><dd>{{ issue.voided_by_name }}</dd></div>{% endif %}
 </dl>
 <h2>Items</h2>
 <table class="data">
-<thead><tr><th>Item</th><th>Quantity</th></tr></thead>
-<tbody><tr class="sample"><td>&ndash;</td><td>&ndash;</td></tr></tbody>
+<thead><tr><th>Item</th><th class="num">Quantity</th></tr></thead>
+<tbody>{% for l in issue.lines %}<tr><td>{{ l.item_name }}</td><td class="num">{{ l.qty }}</td></tr>{% endfor %}</tbody>
 </table>
-<div class="actions">
-  <a class="btn ghost" href="javascript:history.back()">Back</a>
-</div>
+{% if can_request %}
+<h2>Wrong entry? Request a void</h2>
+<form method="post" action="{{ url_for('inventory.issue_void_request', issue_id=issue.id) }}" class="filters">
+  <input type="text" name="void_reason" maxlength="200" placeholder="Reason (required), e.g. wrong item entered" required style="min-width:320px">
+  <button type="submit" class="btn secondary">Request void</button>
+</form>
+<p class="muted">The sale still counts until your manager confirms. Then the stock goes back.</p>
+{% endif %}
+{% if issue.status == 'void_requested' and not can_confirm %}<p class="muted">A void was requested and is waiting for the shop manager or the owner to confirm.</p>{% endif %}
+{% if can_confirm %}
+<h2>Confirm or reject the void request</h2>
+<form method="post" action="{{ url_for('inventory.issue_void_review', issue_id=issue.id) }}" class="filters">
+  <input type="text" name="remarks" maxlength="200" placeholder="Remarks (required to reject)" style="min-width:280px">
+  <button type="submit" name="decision" value="confirm" class="btn primary">Confirm void and put the stock back</button>
+  <button type="submit" name="decision" value="reject" class="btn secondary">Reject</button>
+</form>
+{% endif %}
+<div class="actions"><a class="btn ghost" href="{{ url_for('inventory.issue_list') }}">Back</a></div>
 </div>
 {% endblock %}

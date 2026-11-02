@@ -3,22 +3,23 @@
 {% block title %}Record Sale / Stock Issue{% endblock %}
 {% block content %}
 <div class="page-head"><h1>Record Sale / Stock Issue</h1><span class="badge">New</span></div>
-<p class="note">A simple stock-out record. No prices. Stock cannot go below zero.</p>
+<p class="note">A simple stock-out record. No prices. Stock cannot go below zero, and reserved stock cannot be sold.</p>
 <form method="post" class="card">
 <div class="grid">
   {{ m.field('Issue no.', 'issue_no', 'text', value='auto', readonly=True) }}
-  {{ m.field('Date', 'issue_date', 'date', required=True) }}
-  {{ m.field('Shop', 'location', 'text', value='your shop', readonly=True) }}
-  {{ m.field('Customer name (optional)', 'customer_name', 'text', help='for example: walk-in customer') }}
-  {{ m.field('Receipt / invoice no.', 'document_ref', 'text') }}
-  {{ m.field('Reason', 'reason', 'select', required=True, options=['Sale', 'Other']) }}
-  {{ m.field('Remarks', 'remarks', 'textarea', col=2) }}
+  {{ m.field('Date', 'issue_date', 'date', value=f.get('issue_date', ''), required=True) }}
+  {{ m.field('Location', 'location', 'text', value=location.code ~ ' (' ~ location.loc_type ~ ')', readonly=True) }}
+  {{ m.field('Customer name (optional)', 'customer_name', 'text', value=f.get('customer_name', ''), help='for example: walk-in customer') }}
+  {{ m.field('Receipt / invoice no.', 'document_ref', 'text', value=f.get('document_ref', '')) }}
+  <div class="field span-1"><label for="reason">Reason<span class="req">*</span></label>
+    <select id="reason" name="reason"><option value="">-- select --</option><option value="sale" {{ 'selected' if f.get('reason') == 'sale' }}>Sale</option><option value="other" {{ 'selected' if f.get('reason') == 'other' }}>Other</option></select></div>
+  {{ m.field('Remarks', 'remarks', 'textarea', value=f.get('remarks', ''), col=2) }}
 </div>
 <h2>Items</h2>
 <table class="data lines" id="lines">
-<thead><tr><th>Item</th><th>On hand</th><th>Quantity</th><th></th></tr></thead>
+<thead><tr><th>Item (stock here)</th><th>On hand</th><th>Quantity</th><th></th></tr></thead>
 <tbody>
-<tr class="line-row"><td><select name="item_id[]"><option value="">-- select --</option><option>(items from the list)</option></select></td><td><input type="number" min="0" name="on_hand[]" readonly></td><td><input type="number" min="0" name="qty[]"></td><td><button type="button" class="btn small ghost" data-remove-row>Remove</button></td></tr>
+<tr class="line-row"><td><select name="item_id[]" data-fill-onhand><option value="">-- select --</option>{% for i in items %}<option value="{{ i.id }}" data-onhand="{{ i.on_hand }}" data-available="{{ i.on_hand - i.reserved }}">{{ i.item_name }} ({{ i.on_hand }})</option>{% endfor %}</select></td><td><input type="number" name="on_hand[]" readonly></td><td><input type="number" min="1" name="qty[]"></td><td><button type="button" class="btn small ghost" data-remove-row>Remove</button></td></tr>
 </tbody>
 </table>
 <button type="button" class="btn small" data-add-row="lines">+ Add item</button>

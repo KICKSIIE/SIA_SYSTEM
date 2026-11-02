@@ -2,26 +2,28 @@
 {% import '_macros.html' as m %}
 {% block title %}Stock Adjustment{% endblock %}
 {% block content %}
-<div class="page-head"><h1>Stock Adjustment</h1><span class="badge">Pending</span></div>
+<div class="page-head"><h1>Stock Adjustment</h1><span class="badge {{ 'warn' if adj.status == 'pending' }}">{{ adj.status|capitalize }}</span></div>
 <div class="card">
 <h2>Details</h2>
 <dl class="info">
-  <div><dt>Adjustment no.</dt><dd>&ndash;</dd></div>
-  <div><dt>Date</dt><dd>&ndash;</dd></div>
-  <div><dt>Location</dt><dd>&ndash;</dd></div>
-  <div><dt>Reason</dt><dd>&ndash;</dd></div>
-  <div><dt>Requested by</dt><dd>&ndash;</dd></div>
-  <div><dt>Status</dt><dd>&ndash;</dd></div>
-  <div><dt>Reviewed by</dt><dd>&ndash;</dd></div>
+  <div><dt>Adjustment no.</dt><dd>{{ adj.adj_no }}</dd></div>
+  <div><dt>Date</dt><dd>{{ (adj.created_at|string)[:10] }}</dd></div>
+  <div><dt>Location</dt><dd>{{ adj.location }}</dd></div>
+  <div><dt>Reason</dt><dd>{{ adj.reason|replace('_', ' ')|capitalize }}</dd></div>
+  <div><dt>Requested by</dt><dd>{{ adj.requested_by_name }}</dd></div>
+  <div><dt>Reviewed by</dt><dd>{{ adj.reviewed_by_name or '–' }}</dd></div>
+  <div><dt>Remarks</dt><dd>{{ adj.remarks or '–' }}</dd></div>
+  <div><dt>Review remarks</dt><dd>{{ adj.review_remarks or '–' }}</dd></div>
 </dl>
 <h2>Items</h2>
 <table class="data">
-<thead><tr><th>Item</th><th>System qty</th><th>Actual qty</th><th>Difference</th></tr></thead>
-<tbody><tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td></tr></tbody>
+<thead><tr><th>Item</th><th class="num">System qty</th><th class="num">Actual qty</th><th class="num">Difference</th><th>Remarks</th></tr></thead>
+<tbody>{% for l in adj.lines %}<tr><td>{{ l.item_name }}</td><td class="num">{{ l.qty_system }}</td><td class="num">{{ l.qty_actual }}</td><td class="num">{{ '%+d' % l.qty_diff }}</td><td>{{ l.item_remarks or '' }}</td></tr>{% endfor %}</tbody>
 </table>
+{% if current_role == 'owner' and adj.status == 'pending' and not can_review %}<p class="muted">The manager of this location approves this adjustment. You can see it here and are notified of the result.</p>{% endif %}
 <div class="actions">
-  {% if current_role in ['warehouse_manager', 'shop_manager', 'owner'] %}<a class="btn primary" href="{{ url_for('inventory.adjustment_review', adj_id=adj_id) }}">Review and decide</a>{% endif %}
-  <a class="btn ghost" href="javascript:history.back()">Back</a>
+  {% if can_review %}<a class="btn primary" href="{{ url_for('inventory.adjustment_review', adj_id=adj.id) }}">Review and decide</a>{% endif %}
+  <a class="btn ghost" href="{{ url_for('inventory.adjustment_list') }}">Back</a>
 </div>
 </div>
 {% endblock %}

@@ -2,26 +2,26 @@
 {% import '_macros.html' as m %}
 {% block title %}Review Stock Adjustment{% endblock %}
 {% block content %}
-<div class="page-head"><h1>Review Stock Adjustment</h1><span class="badge">Pending</span></div>
+<div class="page-head"><h1>Review Stock Adjustment</h1><span class="badge warn">Pending</span></div>
 <form method="post" class="card">
 <div class="grid">
-  {{ m.field('Adjustment no.', 'adj_no', 'text', readonly=True) }}
-  {{ m.field('Location', 'location', 'text', readonly=True) }}
-  {{ m.field('Reason', 'reason', 'text', readonly=True) }}
-  {{ m.field('Requested by', 'requested_by', 'text', readonly=True) }}
-  {{ m.field('Decision', 'decision', 'select', required=True, options=['Approve', 'Reject']) }}
-  {{ m.field('Remarks', 'review_remarks', 'textarea', required=True, col=2) }}
+  {{ m.field('Adjustment no.', 'adj_no', 'text', value=adj.adj_no, readonly=True) }}
+  {{ m.field('Location', 'location', 'text', value=adj.location, readonly=True) }}
+  {{ m.field('Reason', 'reason', 'text', value=adj.reason|replace('_', ' ')|capitalize, readonly=True) }}
+  {{ m.field('Requested by', 'requested_by', 'text', value=adj.requested_by_name, readonly=True) }}
+  <div class="field span-1"><label for="decision">Decision<span class="req">*</span></label>
+    <select id="decision" name="decision"><option value="">-- select --</option><option value="approve" {{ 'selected' if f.get('decision') == 'approve' }}>Approve</option><option value="reject" {{ 'selected' if f.get('decision') == 'reject' }}>Reject</option></select></div>
+  {{ m.field('Remarks', 'review_remarks', 'textarea', value=f.get('review_remarks', ''), required=True, col=2) }}
 </div>
 <h2>Items</h2>
-<table class="data lines" id="lines">
-<thead><tr><th>Item</th><th>System qty</th><th>Actual qty</th><th>Difference</th><th></th></tr></thead>
-<tbody>
-<tr class="line-row"><td><input type="text" name="item[]" readonly></td><td><input type="number" min="0" name="qty_system[]" readonly></td><td><input type="number" min="0" name="qty_actual[]" readonly></td><td><input type="number" min="0" name="qty_diff[]" readonly></td><td><button type="button" class="btn small ghost" data-remove-row>Remove</button></td></tr>
-</tbody>
+<table class="data">
+<thead><tr><th>Item</th><th class="num">System qty</th><th class="num">Actual qty</th><th class="num">Difference</th></tr></thead>
+<tbody>{% for l in adj.lines %}<tr><td>{{ l.item_name }}</td><td class="num">{{ l.qty_system }}</td><td class="num">{{ l.qty_actual }}</td><td class="num">{{ '%+d' % l.qty_diff }}</td></tr>{% endfor %}</tbody>
 </table>
+<p class="muted">Approving applies the difference to the stock now and writes it to the stock ledger.</p>
 <div class="actions">
   <button type="submit" name="action" value="submit_decision" class="btn primary">Submit decision</button>
-  <a class="btn ghost" href="{{ url_for('inventory.adjustment_detail', adj_id=adj_id) }}">Back</a>
+  <a class="btn ghost" href="{{ url_for('inventory.adjustment_detail', adj_id=adj.id) }}">Back</a>
 </div>
 </form>
 {% endblock %}

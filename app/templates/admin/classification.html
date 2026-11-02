@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}Brands and Patterns{% endblock %}
+{% block content %}
+<div class="page-head"><h1>Brands and Patterns</h1></div>
+<p class="note">These lists are built from the items. To fix a spelling, type the correct name and click Rename. If that name already exists, the two are <b>merged</b>. Item names are not changed.</p>
+<div class="card">
+<h2>Brands ({{ data.brands|length }})</h2>
+<table class="data">
+<thead><tr><th>Brand</th><th class="num">Items</th><th>Rename or merge into</th></tr></thead>
+<tbody>
+{% for b in data.brands %}<tr><td>{{ b.name }}</td><td class="num">{{ b.n }}</td>
+<td><form method="post" class="filters"><input type="hidden" name="kind" value="brand"><input type="hidden" name="old" value="{{ b.name }}">
+<input type="text" name="new" maxlength="50" placeholder="New name" list="brand-names" required><button class="btn small" type="submit">Rename / merge</button></form></td></tr>
+{% endfor %}
+</tbody>
+</table>
+<datalist id="brand-names">{% for b in data.brands %}<option value="{{ b.name }}">{% endfor %}</datalist>
+</div>
+<div class="card">
+<h2>Patterns ({{ data.patterns|length }})</h2>
+<table class="data">
+<thead><tr><th>Pattern</th><th class="num">Items</th><th>Rename or merge into</th></tr></thead>
+<tbody>
+{% for p in data.patterns %}<tr><td>{{ p.name }}</td><td class="num">{{ p.n }}</td>
+<td>{% if p.name == 'N/A' %}<span class="muted">Used by the system for tubes, flaps and rims</span>{% else %}<form method="post" class="filters"><input type="hidden" name="kind" value="pattern"><input type="hidden" name="old" value="{{ p.name }}">
+<input type="text" name="new" maxlength="40" placeholder="New name" list="pattern-names" required><button class="btn small" type="submit">Rename / merge</button></form>{% endif %}</td></tr>
+{% endfor %}
+</tbody>
+</table>
+<datalist id="pattern-names">{% for p in data.patterns %}<option value="{{ p.name }}">{% endfor %}</datalist>
+</div>
+{% endblock %}

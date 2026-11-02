@@ -9,9 +9,9 @@
   <a class="tile" href="{{ url_for('purchasing.ref_list') }}"><h3>Replenishment forms</h3><p>Open REFs: 0</p></a>
   <a class="tile" href="{{ url_for('purchasing.po_list') }}"><h3>Purchase orders</h3><p>Open POs: 0</p></a>
   <a class="tile" href="{{ url_for('delivery.discrepancy_list') }}"><h3>Discrepancy reports</h3><p>Open: 0</p></a>
-  <a class="tile" href="{{ url_for('inventory.stock_list') }}"><h3>Items below ROP</h3><p>Shop: 0   Warehouse: 0</p></a>
-  <a class="tile" href="{{ url_for('inventory.rop_list') }}"><h3>ROP settings</h3><p>Items without ROP: 0</p></a>
-  <a class="tile" href="{{ url_for('inventory.adjustment_list') }}"><h3>Stock adjustments</h3><p>Approved by managers, new since last visit: 0</p></a>
+  <a class="tile" href="{{ url_for('inventory.stock_list') }}"><h3>Items below ROP</h3><p>{{ stats.below_rop if stats else 0 }} item(s) at or below ROP</p></a>
+  <a class="tile" href="{{ url_for('inventory.rop_list') }}"><h3>ROP settings</h3><p>Item locations without ROP: {{ stats.without_rop if stats else 0 }}</p></a>
+  <a class="tile" href="{{ url_for('inventory.adjustment_list') }}"><h3>Stock adjustments</h3><p>Pending: {{ stats.pending_adjustments if stats else 0 }} &middot; decided this week: {{ stats.recent_adjustments if stats else 0 }}</p></a>
   <a class="tile" href="{{ url_for('admin.user_list') }}"><h3>Users</h3><p>Manage accounts</p></a>
 </div>
 <p class="note">Numbers are placeholders until the screens are connected to the database.</p>

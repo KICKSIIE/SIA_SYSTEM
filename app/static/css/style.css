@@ -38,3 +38,6 @@ dl.info { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 
 .flash { padding: 10px 14px; border-radius: 6px; margin-bottom: 14px; background: #e3eefa; border: 1px solid #b9d4f0; }
 .login { max-width: 460px; margin: 40px auto; } .role-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
 @media (max-width: 800px) { .layout { flex-direction: column; } .sidebar { width: 100%; } .grid { grid-template-columns: 1fr; } .field.span-2 { grid-column: span 1; } }
+.flash.error { background: #fdecea; border-color: #f2b8b5; color: #8a1c14; } .flash.success { background: #e6f4ea; border-color: #b7dfc2; color: #1e5b32; }
+.badge.warn { background: #fff0d6; color: #8a5a00; } td.num, th.num { text-align: right; } table.data td small { display: block; margin: 0; }
+.pager { display: flex; gap: 14px; align-items: center; margin-top: 8px; }

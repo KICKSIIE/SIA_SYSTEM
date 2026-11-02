@@ -4,13 +4,22 @@
 {% block content %}
 <div class="page-head"><h1>Items</h1>{% if current_role in ['owner'] %}<a class="btn primary" href="{{ url_for('admin.item_new') }}">+ New</a>{% endif %}</div>
 <div class="card">
-<div class="filters"><input type="search" placeholder="Search..."><select><option value="">Category: all</option><option>Tire</option><option>Tube</option><option>Flap</option><option>Other</option></select></div>
+<form method="get" class="filters">
+  <input type="search" name="q" value="{{ f.get('q', '') }}" placeholder="Search name, code, brand or model...">
+  <select name="category"><option value="">Category: all</option>{% for k, label in categories %}<option value="{{ k }}" {{ 'selected' if f.get('category') == k }}>{{ label }}</option>{% endfor %}</select>
+  <select name="brand"><option value="">Brand: all</option>{% for b in brands %}<option {{ 'selected' if f.get('brand') == b }}>{{ b }}</option>{% endfor %}</select>
+  <select name="status">{% for k, label in [('active','Active'),('inactive','Inactive'),('all','All')] %}<option value="{{ k }}" {{ 'selected' if f.get('status', 'active') == k }}>{{ label }}</option>{% endfor %}</select>
+  <button class="btn" type="submit">Filter</button>
+</form>
 <table class="data">
-<thead><tr><th>Item code</th><th>Item name</th><th>Brand</th><th>Size</th><th>Ply</th><th>Category</th><th>Active</th><th></th></tr></thead>
+<thead><tr><th>Code</th><th>Item name</th><th>Brand</th><th>Model</th><th>Size</th><th>Ply</th><th>Pattern</th><th>Category</th><th class="num">In stock</th><th>Status</th><th></th></tr></thead>
 <tbody>
-<tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td><a href="{{ url_for('admin.item_edit', item_id=1) }}">Open</a></td></tr>
+{% for r in res.rows %}
+<tr><td>{{ r.item_code }}</td><td>{{ r.item_name }}</td><td>{{ r.brand }}</td><td>{{ r.model or '–' }}</td><td>{{ r.size or '–' }}</td><td>{{ r.ply_rating or '–' }}</td><td>{{ r.pattern or '–' }}</td><td>{{ r.category|capitalize }}</td><td class="num">{{ r.on_hand }}</td><td><span class="badge {{ '' if r.is_active else 'warn' }}">{{ 'Active' if r.is_active else 'Inactive' }}</span></td>
+<td>{% if current_role == 'owner' %}<a href="{{ url_for('admin.item_edit', item_id=r.id) }}">Edit</a>{% endif %}<a href="{{ url_for('inventory.stock_detail', item_id=r.id) }}">Stock</a></td></tr>
+{% else %}<tr><td colspan="11" class="muted">No items found.</td></tr>{% endfor %}
 </tbody>
 </table>
-<p class="muted">No records yet. The row above is a placeholder so you can click through the screens.</p>
+{{ m.pager(res, 'admin.item_list', f) }}
 </div>
 {% endblock %}

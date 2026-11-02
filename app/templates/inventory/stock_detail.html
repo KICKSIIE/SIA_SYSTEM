@@ -6,20 +6,26 @@
 <div class="card">
 <h2>Details</h2>
 <dl class="info">
-  <div><dt>Item</dt><dd>&ndash;</dd></div>
-  <div><dt>Brand</dt><dd>&ndash;</dd></div>
-  <div><dt>Size / ply</dt><dd>&ndash;</dd></div>
-  <div><dt>Category</dt><dd>&ndash;</dd></div>
+  <div><dt>Item</dt><dd>{{ card.item.item_name }}</dd></div>
+  <div><dt>Code</dt><dd>{{ card.item.item_code }}</dd></div>
+  <div><dt>Brand</dt><dd>{{ card.item.brand }}</dd></div>
+  <div><dt>Size / ply</dt><dd>{{ card.item.size or '–' }} {{ card.item.ply_rating or '' }}</dd></div>
+  <div><dt>Model</dt><dd>{{ card.item.model or '–' }}</dd></div>
+  <div><dt>Pattern</dt><dd>{{ card.item.pattern or '–' }}</dd></div>
+  <div><dt>Category</dt><dd>{{ card.item.category|capitalize }}</dd></div>
 </dl>
-<h2>Items</h2>
+<h2>Stock by location</h2>
 <table class="data">
-<thead><tr><th>Location</th><th>On hand</th><th>Reserved</th><th>ROP</th><th>Max level</th></tr></thead>
-<tbody><tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td></tr></tbody>
+<thead><tr><th>Location</th><th>Rack</th><th class="num">On hand</th><th class="num">Reserved</th><th class="num">Available</th><th class="num">ROP</th><th class="num">Max level</th></tr></thead>
+<tbody>{% for b in card.balances %}<tr><td>{{ b.location }}</td><td>{{ b.rack or '–' }}</td><td class="num">{{ b.on_hand }}</td><td class="num">{{ b.reserved }}</td><td class="num">{{ b.on_hand - b.reserved }}</td><td class="num">{{ b.rop or '–' }}</td><td class="num">{{ b.max_level or '–' }}</td></tr>{% endfor %}</tbody>
 </table>
-<h2>Stock ledger</h2>
+<h2>Stock ledger (latest 100)</h2>
 <table class="data">
-<thead><tr><th>Date</th><th>Location</th><th>Movement</th><th>Qty</th><th>Balance</th><th>Reference</th></tr></thead>
-<tbody><tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td></tr></tbody>
+<thead><tr><th>Date</th><th>Location</th><th>Movement</th><th class="num">Qty</th><th class="num">Balance</th><th>Reference</th><th>Remarks</th></tr></thead>
+<tbody>
+{% for l in card.ledger %}<tr><td>{{ (l.created_at|string)[:10] }}</td><td>{{ l.location }}</td><td>{{ l.movement_type|replace('_', ' ') }}</td><td class="num">{{ '%+d' % l.qty_change }}</td><td class="num">{{ l.balance_after }}</td><td>{{ l.ref_no or '' }}</td><td>{{ l.remarks or '' }}</td></tr>
+{% else %}<tr><td colspan="7" class="muted">No movements yet.</td></tr>{% endfor %}
+</tbody>
 </table>
 <div class="actions">
   {% if current_role in ['owner'] %}<a class="btn secondary" href="{{ url_for('inventory.rop_edit', item_id=item_id) }}">Edit ROP settings</a>{% endif %}

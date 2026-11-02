@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as m %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="page-head"><h1>{{ title }}</h1><a class="btn ghost" href="{{ url_for('dashboard.reports') }}">All reports</a></div>
+<div class="card">
+<form method="get" class="filters">
+  <input type="search" name="q" value="{{ f.get('q', '') }}" placeholder="Search item...">
+  <select name="location"><option value="">Location: all</option>{% for l in locations %}<option value="{{ l.id }}" {{ 'selected' if f.get('location') == l.id|string }}>{{ l.code }} ({{ l.loc_type }})</option>{% endfor %}</select>
+  {% if has_category %}<select name="category"><option value="">Category: all</option>{% for c in ['tire','tube','flap','other'] %}<option value="{{ c }}" {{ 'selected' if f.get('category') == c }}>{{ c|capitalize }}</option>{% endfor %}</select>{% endif %}
+  {% if has_dates %}<label>From <input type="date" name="date_from" value="{{ d_from }}"></label><label>To <input type="date" name="date_to" value="{{ d_to }}"></label>{% endif %}
+  <button class="btn" type="submit">Show</button>
+  <button class="btn secondary" type="submit" name="format" value="csv">Download CSV</button>
+</form>
+<div style="overflow-x:auto">
+<table class="data">
+<thead><tr>{% for c in cols %}<th>{{ c|replace('_', ' ')|capitalize }}</th>{% endfor %}</tr></thead>
+<tbody>
+{% for r in rows %}<tr>{% for c in cols %}<td>{{ '' if r[c] is none else r[c] }}</td>{% endfor %}</tr>
+{% else %}<tr><td colspan="{{ cols|length }}" class="muted">No rows for these filters.</td></tr>{% endfor %}
+</tbody>
+</table>
+</div>
+<p class="muted">{{ total }} row{{ '' if total == 1 else 's' }}{% if total > limit %}. Showing the first {{ limit }}. Download the CSV for all of them.{% endif %}</p>
+</div>
+{% endblock %}

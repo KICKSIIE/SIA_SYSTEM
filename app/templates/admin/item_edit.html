@@ -2,18 +2,12 @@
 {% import '_macros.html' as m %}
 {% block title %}Edit Item{% endblock %}
 {% block content %}
-<div class="page-head"><h1>Edit Item</h1></div>
+<div class="page-head"><h1>Edit Item</h1><span class="badge">{{ item.item_code }}</span></div>
 <form method="post" class="card">
+{% include 'admin/_item_form.html' %}
 <div class="grid">
-  {{ m.field('Item code', 'item_code', 'text', required=True) }}
-  {{ m.field('Item name', 'item_name', 'text', required=True, col=2) }}
-  {{ m.field('Brand', 'brand', 'text', required=True) }}
-  {{ m.field('Size', 'size', 'text') }}
-  {{ m.field('Ply rating', 'ply_rating', 'text') }}
-  {{ m.field('Pattern', 'pattern', 'text') }}
-  {{ m.field('Category', 'category', 'select', required=True, options=['Tire', 'Tube', 'Flap', 'Other']) }}
-  {{ m.field('Unit', 'unit', 'text', value='pc') }}
-  {{ m.field('Active', 'is_active', 'checkbox', help=' Active') }}
+  {{ m.field('Item code', 'item_code', 'text', value=item.item_code, readonly=True, help='The code never changes, it is on every record') }}
+  {{ m.field('Active', 'is_active', 'checkbox', value=f.get('is_active'), help=' Untick to hide it from lists. Only possible when no stock is left (now: ' ~ on_hand ~ ').') }}
 </div>
 <div class="actions">
   <button type="submit" name="action" value="save_item" class="btn primary">Save item</button>

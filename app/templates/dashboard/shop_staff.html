@@ -5,7 +5,7 @@
 <div class="page-head"><h1>Dashboard</h1><span class="badge">Shop Staff</span></div>
 <div class="cards">
   <a class="tile" href="{{ url_for('inventory.issue_new') }}"><h3>Record a sale / issue</h3><p>Enter a stock-out</p></a>
-  <a class="tile" href="{{ url_for('inventory.issue_list') }}"><h3>Sales / issues</h3><p>Entries made today: 0</p></a>
+  <a class="tile" href="{{ url_for('inventory.issue_list') }}"><h3>Sales / issues</h3><p>Entries made today: {{ stats.issues_today if stats else 0 }}</p></a>
   <a class="tile" href="{{ url_for('inventory.stock_list') }}"><h3>Shop stock</h3><p>Check what is on the shelf</p></a>
 </div>
 <p class="note">Numbers are placeholders until the screens are connected to the database.</p>

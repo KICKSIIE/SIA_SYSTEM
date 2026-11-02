@@ -4,13 +4,18 @@
 {% block content %}
 <div class="page-head"><h1>RF Queue</h1></div>
 <div class="card">
-<div class="filters"><input type="search" placeholder="Search..."><select><option value="">Status: all</option><option>Open</option><option>Partially delivered</option></select></div>
+<form method="get" class="filters">
+  <input type="search" name="q" value="{{ f.get('q', '') }}" placeholder="Search RF no. or shop...">
+  <select name="status"><option value="">Status: all open</option><option value="open" {{ 'selected' if f.get('status') == 'open' }}>Open</option><option value="partially_delivered" {{ 'selected' if f.get('status') == 'partially_delivered' }}>Partially delivered</option></select>
+  <button class="btn" type="submit">Filter</button>
+</form>
 <table class="data">
-<thead><tr><th>RF no.</th><th>Date</th><th>Shop</th><th>Items</th><th>Waiting for stock</th><th>Status</th><th></th></tr></thead>
+<thead><tr><th>RF no.</th><th>Date</th><th>Shop</th><th class="num">Items</th><th class="num">Waiting for stock</th><th>Status</th><th></th></tr></thead>
 <tbody>
-<tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td><a href="{{ url_for('inventory.rfqueue_review', rf_id=1) }}">Open</a></td></tr>
+{% for r in res.rows %}<tr><td>{{ r.rf_no }}</td><td>{{ (r.rf_date|string)[:10] }}</td><td>{{ r.shop }}</td><td class="num">{{ r.n_items }}</td><td class="num">{{ r.n_waiting }}</td><td><span class="badge {{ 'warn' if r.n_waiting }}">{{ r.status|replace('_', ' ')|capitalize }}</span></td><td><a href="{{ url_for('inventory.rfqueue_review', rf_id=r.id) }}">Open</a></td></tr>
+{% else %}<tr><td colspan="7" class="muted">No requisitions waiting. They appear here when a shop submits an RF.</td></tr>{% endfor %}
 </tbody>
 </table>
-<p class="muted">No records yet. The row above is a placeholder so you can click through the screens.</p>
+{{ m.pager(res, 'inventory.rfqueue_list', f) }}
 </div>
 {% endblock %}

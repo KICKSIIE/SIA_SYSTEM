@@ -3,18 +3,10 @@
 {% block title %}New Item{% endblock %}
 {% block content %}
 <div class="page-head"><h1>New Item</h1></div>
+<p class="note">Items are classified only by their specs. The code is generated if you leave it empty.</p>
 <form method="post" class="card">
-<div class="grid">
-  {{ m.field('Item code', 'item_code', 'text', required=True) }}
-  {{ m.field('Item name', 'item_name', 'text', required=True, col=2) }}
-  {{ m.field('Brand', 'brand', 'text', required=True) }}
-  {{ m.field('Size', 'size', 'text') }}
-  {{ m.field('Ply rating', 'ply_rating', 'text') }}
-  {{ m.field('Pattern', 'pattern', 'text') }}
-  {{ m.field('Category', 'category', 'select', required=True, options=['Tire', 'Tube', 'Flap', 'Other']) }}
-  {{ m.field('Unit', 'unit', 'text', value='pc') }}
-  {{ m.field('Active', 'is_active', 'checkbox', help=' Active') }}
-</div>
+{% include 'admin/_item_form.html' %}
+<div class="grid">{{ m.field('Item code', 'item_code', 'text', value=f.get('item_code') or '', help='Leave empty to generate one, for example TIR-0417') }}</div>
 <div class="actions">
   <button type="submit" name="action" value="save_item" class="btn primary">Save item</button>
   <a class="btn ghost" href="{{ url_for('admin.item_list') }}">Back</a>

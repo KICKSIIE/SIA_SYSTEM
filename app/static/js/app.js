@@ -14,3 +14,22 @@ document.addEventListener("click", function (e) {
     if (tb.querySelectorAll(".line-row").length > 1) { rem.closest("tr").remove(); }
   }
 });
+
+// Display helpers for the item tables (no business rules here, the server checks everything).
+document.addEventListener("change", function (e) {
+  var sel = e.target.closest("select[data-fill-onhand]");
+  if (sel) {
+    var row = sel.closest("tr"), opt = sel.options[sel.selectedIndex];
+    var shown = row.querySelector("input[name='on_hand[]'], input[name='qty_system[]']");
+    if (shown) { shown.value = opt && opt.dataset.onhand !== undefined ? opt.dataset.onhand : ""; }
+    updateDiff(row);
+  }
+});
+document.addEventListener("input", function (e) {
+  if (e.target.matches("[data-diff]")) { updateDiff(e.target.closest("tr")); }
+});
+function updateDiff(row) {
+  var sys = row.querySelector("input[name='qty_system[]']"), act = row.querySelector("input[data-diff]"),
+      diff = row.querySelector("input[name='qty_diff[]']");
+  if (sys && act && diff) { diff.value = (sys.value !== "" && act.value !== "") ? (Number(act.value) - Number(sys.value)) : ""; }
+}

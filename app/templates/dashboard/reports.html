@@ -4,12 +4,9 @@
 {% block content %}
 <div class="page-head"><h1>Reports</h1></div>
 <div class="cards">
-  <div class="tile"><h3>Stock summary</h3><p>On hand, reserved and available per item and location</p></div>
-  <div class="tile"><h3>Items below ROP</h3><p>What needs restocking</p></div>
-  <div class="tile"><h3>RF / REF / PO status</h3><p>Where each document is</p></div>
-  <div class="tile"><h3>Deliveries and variances</h3><p>TS, AR and discrepancies</p></div>
-  <div class="tile"><h3>Stock ledger</h3><p>Every IN and OUT per item</p></div>
-  <div class="tile"><h3>Audit log</h3><p>Who changed what and when</p></div>
+{% for key, (title, text) in reports.items() %}
+  <a class="tile" href="{{ url_for('dashboard.report', name=key) }}"><h3>{{ title }}</h3><p>{{ text }}</p></a>
+{% endfor %}
 </div>
-<p class="note">Report layouts come after the main screens are connected.</p>
+<p class="note">Each report can be filtered and downloaded as a CSV file that opens in Excel. Reports for requisitions, purchasing and delivery come when those modules are connected.</p>
 {% endblock %}

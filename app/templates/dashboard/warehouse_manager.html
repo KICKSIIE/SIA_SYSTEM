@@ -10,7 +10,7 @@
   <a class="tile" href="{{ url_for('purchasing.ref_list') }}"><h3>Replenishment forms</h3><p>Open REFs: 0</p></a>
   <a class="tile" href="{{ url_for('purchasing.po_list') }}"><h3>Purchase orders</h3><p>Waiting for delivery: 0</p></a>
   <a class="tile" href="{{ url_for('delivery.discrepancy_list') }}"><h3>Discrepancy reports</h3><p>Open: 0</p></a>
-  <a class="tile" href="{{ url_for('inventory.adjustment_list') }}"><h3>Stock adjustments</h3><p>Warehouse adjustments to approve: 0</p></a>
+  <a class="tile" href="{{ url_for('inventory.adjustment_list') }}"><h3>Stock adjustments</h3><p>Warehouse adjustments to approve: {{ stats.pending_adjustments if stats else 0 }}</p></a>
 </div>
 <p class="note">Numbers are placeholders until the screens are connected to the database.</p>
 {% endblock %}

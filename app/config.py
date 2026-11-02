@@ -10,3 +10,4 @@ class Config:
         "DATABASE_URL", "postgresql+psycopg2://postgres:password@localhost:5432/inventory_db"
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    DEV_LOGIN = os.getenv("DEV_LOGIN", "1") == "1"   # temporary role / user picker

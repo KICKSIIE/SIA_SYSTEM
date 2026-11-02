@@ -4,13 +4,19 @@
 {% block content %}
 <div class="page-head"><h1>ROP Settings</h1></div>
 <div class="card">
-<div class="filters"><input type="search" placeholder="Search..."><select><option value="">Location: all</option><option>(all locations)</option></select><select><option value="">Show: all</option><option>All items</option><option>Items without ROP</option></select></div>
+<form method="get" class="filters">
+  <input type="search" name="q" value="{{ f.get('q', '') }}" placeholder="Search item or code...">
+  <select name="location"><option value="">Location: all</option>{% for l in locations %}<option value="{{ l.id }}" {{ 'selected' if f.get('location') == l.id|string }}>{{ l.code }} ({{ l.loc_type }})</option>{% endfor %}</select>
+  <select name="show"><option value="">Show: all items</option><option value="missing" {{ 'selected' if f.get('show') == 'missing' }}>Items without ROP</option></select>
+  <button class="btn" type="submit">Filter</button>
+</form>
 <table class="data">
-<thead><tr><th>Item</th><th>Location</th><th>Stock</th><th>ROP</th><th>Max level</th><th>Lead time (days)</th><th>Updated</th><th></th></tr></thead>
+<thead><tr><th>Item</th><th>Location</th><th>Rack</th><th class="num">Stock</th><th class="num">ROP</th><th class="num">Max level</th><th class="num">Lead time (days)</th><th>Updated</th><th></th></tr></thead>
 <tbody>
-<tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td><a href="{{ url_for('inventory.rop_edit', item_id=1) }}">Open</a></td></tr>
+{% for r in res.rows %}<tr><td>{{ r.item_name }}</td><td>{{ r.location }}</td><td>{{ r.rack or '–' }}</td><td class="num">{{ r.on_hand }}</td><td class="num">{{ r.rop or '–' }}</td><td class="num">{{ r.max_level or '–' }}</td><td class="num">{{ r.lead_time_days or '–' }}</td><td>{{ (r.updated_at|string)[:10] if r.updated_at else '' }}</td><td><a href="{{ url_for('inventory.rop_edit', item_id=r.item_id) }}">Edit</a></td></tr>
+{% else %}<tr><td colspan="9" class="muted">No items found.</td></tr>{% endfor %}
 </tbody>
 </table>
-<p class="muted">No records yet. The row above is a placeholder so you can click through the screens.</p>
+{{ m.pager(res, 'inventory.rop_list', f) }}
 </div>
 {% endblock %}

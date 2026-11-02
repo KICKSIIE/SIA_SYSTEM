@@ -4,13 +4,21 @@
 {% block content %}
 <div class="page-head"><h1>Stock</h1></div>
 <div class="card">
-<div class="filters"><input type="search" placeholder="Search..."><select><option value="">Location: all</option><option>(all locations)</option></select><select><option value="">Category: all</option><option>Tire</option><option>Tube</option><option>Flap</option></select><select><option value="">Status: all</option><option>Below ROP</option><option>OK</option><option>Out of stock</option></select></div>
+<form method="get" class="filters">
+  <input type="search" name="q" value="{{ f.get('q', '') }}" placeholder="Search item or code...">
+  {% if current_role == 'owner' %}<select name="location"><option value="">Location: all</option>{% for l in locations %}<option value="{{ l.id }}" {{ 'selected' if f.get('location') == l.id|string }}>{{ l.code }} ({{ l.loc_type }})</option>{% endfor %}</select>{% endif %}
+  <select name="category"><option value="">Category: all</option>{% for c in ['tire','tube','flap','other'] %}<option value="{{ c }}" {{ 'selected' if f.get('category') == c }}>{{ c|capitalize }}</option>{% endfor %}</select>
+  <select name="status"><option value="">Status: all</option><option value="below" {{ 'selected' if f.get('status') == 'below' }}>Below ROP</option><option value="ok" {{ 'selected' if f.get('status') == 'ok' }}>OK</option><option value="out" {{ 'selected' if f.get('status') == 'out' }}>Out of stock</option></select>
+  <button class="btn" type="submit">Filter</button>
+</form>
 <table class="data">
-<thead><tr><th>Item</th><th>Location</th><th>On hand</th><th>Reserved</th><th>Available</th><th>ROP</th><th>Status</th><th></th></tr></thead>
+<thead><tr><th>Item</th><th>Location</th><th>Rack</th><th class="num">On hand</th><th class="num">Reserved</th><th class="num">Available</th><th class="num">ROP</th><th>Status</th><th></th></tr></thead>
 <tbody>
-<tr class="sample"><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td><a href="{{ url_for('inventory.stock_detail', item_id=1) }}">Open</a></td></tr>
+{% for r in res.rows %}
+<tr><td>{{ r.item_name }}<small>{{ r.item_code }}</small></td><td>{{ r.location }}</td><td>{{ r.rack or '–' }}</td><td class="num">{{ r.on_hand }}</td><td class="num">{{ r.reserved }}</td><td class="num">{{ r.available }}</td><td class="num">{{ r.rop if r.rop else '–' }}</td><td><span class="badge {{ 'warn' if r.status != 'OK' }}">{{ r.status }}</span></td><td><a href="{{ url_for('inventory.stock_detail', item_id=r.item_id) }}">Open</a></td></tr>
+{% else %}<tr><td colspan="9" class="muted">No stock found.</td></tr>{% endfor %}
 </tbody>
 </table>
-<p class="muted">No records yet. The row above is a placeholder so you can click through the screens.</p>
+{{ m.pager(res, 'inventory.stock_list', f) }}
 </div>
 {% endblock %}

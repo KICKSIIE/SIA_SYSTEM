@@ -7,17 +7,18 @@
 <form method="post" class="card">
 <div class="grid">
   {{ m.field('Adjustment no.', 'adj_no', 'text', value='auto', readonly=True) }}
-  {{ m.field('Date', 'adj_date', 'date', required=True) }}
-  {{ m.field('Location', 'location', 'text', value='your location', readonly=True) }}
-  {{ m.field('Reason', 'reason', 'select', required=True, options=['Count difference', 'Damaged', 'Lost', 'Delivery variance', 'Other']) }}
-  {{ m.field('Linked AR no. (optional)', 'ar_no', 'text') }}
-  {{ m.field('Remarks', 'remarks', 'textarea', col=2) }}
+  {{ m.field('Location', 'location', 'text', value=location.code ~ ' (' ~ location.loc_type ~ ')', readonly=True) }}
+  <div class="field span-1"><label for="reason">Reason<span class="req">*</span></label>
+    <select id="reason" name="reason"><option value="">-- select --</option>{% for r in ['Count difference', 'Damaged', 'Lost', 'Delivery variance', 'Other'] %}<option {{ 'selected' if f.get('reason') == r }}>{{ r }}</option>{% endfor %}</select></div>
+  {{ m.field('Linked AR no. (optional)', 'ar_no', 'text', value=f.get('ar_no', '')) }}
+  {{ m.field('Remarks', 'remarks', 'textarea', value=f.get('remarks', ''), col=2) }}
 </div>
 <h2>Items</h2>
+<p class="muted">The system quantity is read again when you save. Enter the quantity you actually counted.</p>
 <table class="data lines" id="lines">
 <thead><tr><th>Item</th><th>System qty</th><th>Actual qty</th><th>Difference</th><th>Remarks</th><th></th></tr></thead>
 <tbody>
-<tr class="line-row"><td><select name="item_id[]"><option value="">-- select --</option><option>(items from the list)</option></select></td><td><input type="number" min="0" name="qty_system[]" readonly></td><td><input type="number" min="0" name="qty_actual[]"></td><td><input type="number" min="0" name="qty_diff[]" readonly></td><td><input type="text" name="item_remarks[]"></td><td><button type="button" class="btn small ghost" data-remove-row>Remove</button></td></tr>
+<tr class="line-row"><td><select name="item_id[]" data-fill-onhand><option value="">-- select --</option>{% for i in items %}<option value="{{ i.id }}" data-onhand="{{ i.on_hand }}" data-available="{{ i.on_hand - i.reserved }}">{{ i.item_name }} ({{ i.on_hand }})</option>{% endfor %}</select></td><td><input type="number" name="qty_system[]" readonly></td><td><input type="number" min="0" name="qty_actual[]" data-diff></td><td><input type="number" name="qty_diff[]" readonly></td><td><input type="text" name="item_remarks[]"></td><td><button type="button" class="btn small ghost" data-remove-row>Remove</button></td></tr>
 </tbody>
 </table>
 <button type="button" class="btn small" data-add-row="lines">+ Add item</button>
